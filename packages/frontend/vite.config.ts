@@ -17,19 +17,19 @@ export default defineConfig({
       ...inject({
         global: [
           require.resolve(
-            './node_modules/node-stdlib-browser/helpers/esbuild/shim',
+            '../../node_modules/node-stdlib-browser/helpers/esbuild/shim',
           ),
           'global',
         ],
         process: [
           require.resolve(
-            './node_modules/node-stdlib-browser/helpers/esbuild/shim',
+            '../../node_modules/node-stdlib-browser/helpers/esbuild/shim',
           ),
           'process',
         ],
         Buffer: [
           require.resolve(
-            './node_modules/node-stdlib-browser/helpers/esbuild/shim',
+            '../../node_modules/node-stdlib-browser/helpers/esbuild/shim',
           ),
           'Buffer',
         ],
@@ -42,7 +42,7 @@ export default defineConfig({
       ...stdLibBrowser,
       'symbol-crypto-wasm-node': path.resolve(
         __dirname,
-        'node_modules/symbol-crypto-wasm-web/symbol_crypto_wasm.js',
+        '../../node_modules/symbol-crypto-wasm-web/symbol_crypto_wasm.js',
       ),
     },
   },
