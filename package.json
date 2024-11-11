@@ -1,4 +1,7 @@
 {
+    "name":"htlc",
+    "private":true,
+    "type":"module",
     "workspaces":[
         "packages/*"
     ]
