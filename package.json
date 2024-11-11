@@ -1,8 +1,11 @@
 {
-    "name":"htlc",
-    "private":true,
-    "type":"module",
-    "workspaces":[
+    "name": "htlc",
+    "private": true,
+    "type": "module",
+    "workspaces": [
         "packages/*"
-    ]
+    ],
+    "devDependencies": {
+        "nx": "^20.0.12"
+    }
 }
