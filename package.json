@@ -5,6 +5,9 @@
     "workspaces": [
         "packages/*"
     ],
+    "scripts":{
+        "dev":"nx run-many --target=dev --projects=contracts,client --parallel"
+    },
     "devDependencies": {
         "nx": "^20.0.12"
     }
