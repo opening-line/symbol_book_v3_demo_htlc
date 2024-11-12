@@ -1,9 +1,14 @@
 {
-  "scripts":{
-    "dev":"hardhat compile &&hardhat node"
+  "scripts": {
+    "dev": "hardhat typechain &&hardhat node"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
-    "hardhat": "^2.22.15"
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "hardhat": "^2.22.15",
+    "typechain": "^8.3.2"
   }
 }
