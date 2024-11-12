@@ -1,5 +1,6 @@
 {
   "name":"contracts",
+  "main":"types/index.ts",
   "scripts": {
     "dev": "hardhat typechain &&hardhat node"
   },
