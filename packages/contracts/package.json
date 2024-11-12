@@ -1,6 +1,6 @@
 {
   "scripts":{
-    "dev":"hardhat node"
+    "dev":"hardhat compile &&hardhat node"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
