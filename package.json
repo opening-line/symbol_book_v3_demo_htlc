@@ -6,7 +6,7 @@
         "packages/*"
     ],
     "scripts":{
-        "dev":"nx run-many --target=dev --projects=contracts,client --parallel"
+        "dev":"nx run-many --target=dev --projects=contracts,frontend --parallel"
     },
     "devDependencies": {
         "nx": "^20.0.12"
