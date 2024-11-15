@@ -10,7 +10,7 @@ export default () => {
   )
   const [address, setAddress] = useState("")
   return (
-    <>
+    <div>
       <div>EIP-6963対応ウォレット</div>
       {detail.map((d, i) => (
         <label key={i}>
@@ -35,6 +35,6 @@ export default () => {
         </button>
         {address}
       </div>
-    </>
+    </div>
   )
 }

@@ -17,7 +17,7 @@ export default () => {
   const [time, setTime] = useState(0)
   const [value, setValue] = useState(1000000000000000000n)
   return (
-    <>
+    <div>
       <div>HTLCをデプロイ</div>
       <div>
         <div>
@@ -75,6 +75,6 @@ export default () => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
