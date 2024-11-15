@@ -1,14 +1,13 @@
-import { HTLC__factory, HTLC } from "contracts"
+import { HTLC__factory } from "contracts"
 import { useContext, useState } from "react"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
-import { Signer } from "ethers"
 
 export default () => {
   const [ethersBrowserProvider, _setEthersBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
   const [address, setAddress] = useState("")
-  const [hash, setHash] = useState("")
+  const [hash, _setHash] = useState("")
   const [time, setTime] = useState(0)
   return (
     <>
