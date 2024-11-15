@@ -1,13 +1,19 @@
 import { HTLC__factory } from "contracts"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import { PayloadContext } from "../context/Payload"
+import { keccak256 } from "ethers"
 
 export default () => {
   const [ethersBrowserProvider, _setEthersBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
+  const [payload, _setPayload] = useContext(PayloadContext)
   const [address, setAddress] = useState("")
-  const [hash, _setHash] = useState("")
+  const [hash, setHash] = useState("")
+  useEffect(() => {
+    setHash(keccak256(payload))
+  }, [payload])
   const [time, setTime] = useState(0)
   return (
     <>
@@ -17,6 +23,7 @@ export default () => {
           相手のアドレス
           <input
             type='text'
+            value={address}
             onChange={(event) => {
               setAddress(event.target.value)
             }}
@@ -26,8 +33,9 @@ export default () => {
           ハッシュ
           <input
             type='text'
+            value={hash}
             onChange={(event) => {
-              setAddress(event.target.value)
+              setHash(event.target.value)
             }}
           />
         </div>
@@ -35,6 +43,7 @@ export default () => {
           ロックする期間
           <input
             type='text'
+            value={time}
             onChange={(event) => {
               setTime(Number(event.target.value))
             }}
