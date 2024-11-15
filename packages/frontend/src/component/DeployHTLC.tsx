@@ -15,6 +15,7 @@ export default () => {
     setHash(keccak256(payload))
   }, [payload])
   const [time, setTime] = useState(0)
+  const [value, setValue] = useState(1000000000000000000n)
   return (
     <>
       <div>HTLCをデプロイ</div>
@@ -42,10 +43,20 @@ export default () => {
         <div>
           ロックする期間
           <input
-            type='text'
+            type='number'
             value={time}
             onChange={(event) => {
               setTime(Number(event.target.value))
+            }}
+          />
+        </div>
+        <div>
+          数量{"(wei)"}
+          <input
+            type='number'
+            value={value.toString()}
+            onChange={(event) => {
+              setValue(BigInt(event.target.value))
             }}
           />
         </div>
