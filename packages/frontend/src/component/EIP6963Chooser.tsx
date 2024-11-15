@@ -1,13 +1,14 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { EIP6963DetailContext } from "../context/EIP6963Detail"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { BrowserProvider } from "ethers"
 
 export default () => {
   const detail = useContext(EIP6963DetailContext)
-  const [_browserProvider, setBrowserProvider] = useContext(
+  const [browserProvider, setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
+  const [address, setAddress] = useState("")
   return (
     <>
       <div>EIP-6963対応ウォレット</div>
@@ -24,6 +25,16 @@ export default () => {
           {d.info.name}
         </label>
       ))}
+      <div>
+        <button
+          onClick={async (_event) => {
+            setAddress(await (await browserProvider.getSigner()).getAddress())
+          }}
+        >
+          接続
+        </button>
+        {address}
+      </div>
     </>
   )
 }
