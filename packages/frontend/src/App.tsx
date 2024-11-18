@@ -13,9 +13,13 @@ export default function () {
         <EIP6963DetailProvider>
           <PayloadProvider>
             <EIP6963Chooser />
+            <hr/>
             <GeneratePayload />
+            <hr/>
             <DeployHTLC />
+            <hr/>
             <SecretLock />
+            <hr/>
           </PayloadProvider>
         </EIP6963DetailProvider>
       </EthersBrowserProviderProvider>
