@@ -5,6 +5,7 @@ import GeneratePayload from "./component/GeneratePayload"
 import { EthersBrowserProviderProvider } from "./context/EthersBrowserProvider"
 import DeployHTLC from "./component/DeployHTLC"
 import SecretLock from "./component/SecretLock"
+import SecretProof from "./component/SecretProof"
 
 export default function () {
   return (
@@ -13,13 +14,15 @@ export default function () {
         <EIP6963DetailProvider>
           <PayloadProvider>
             <EIP6963Chooser />
-            <hr/>
+            <hr />
             <GeneratePayload />
-            <hr/>
+            <hr />
             <DeployHTLC />
-            <hr/>
+            <hr />
             <SecretLock />
-            <hr/>
+            <hr />
+            <SecretProof />
+            <hr />
           </PayloadProvider>
         </EIP6963DetailProvider>
       </EthersBrowserProviderProvider>
