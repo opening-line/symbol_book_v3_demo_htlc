@@ -1,11 +1,8 @@
 import { EIP6963DetailProvider } from "./context/EIP6963Detail"
-import EIP6963Chooser from "./component/EIP6963Chooser"
 import { PayloadProvider } from "./context/Payload"
-import GeneratePayload from "./component/GeneratePayload"
 import { EthersBrowserProviderProvider } from "./context/EthersBrowserProvider"
-import DeployHTLC from "./component/DeployHTLC"
-import SecretLock from "./component/SecretLock"
-import SecretProof from "./component/SecretProof"
+import EIP6963Chooser from "./component/EIP6963Chooser"
+import SSSChooser from "./component/SSSChooser"
 
 export default function () {
   return (
@@ -13,15 +10,11 @@ export default function () {
       <EthersBrowserProviderProvider>
         <EIP6963DetailProvider>
           <PayloadProvider>
+            <h1>クロスチェーンスワップアプリ</h1>
+            <hr />
             <EIP6963Chooser />
             <hr />
-            <GeneratePayload />
-            <hr />
-            <DeployHTLC />
-            <hr />
-            <SecretLock />
-            <hr />
-            <SecretProof />
+            <SSSChooser />
             <hr />
           </PayloadProvider>
         </EIP6963DetailProvider>

@@ -11,7 +11,7 @@ export default () => {
   const [address, setAddress] = useState("")
   return (
     <div>
-      <div>EIP-6963対応ウォレット</div>
+      <h2>EIP-6963対応ウォレット</h2>
       {detail.map((d, i) => (
         <label key={i}>
           <input

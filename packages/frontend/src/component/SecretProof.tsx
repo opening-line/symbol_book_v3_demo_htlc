@@ -1,8 +1,10 @@
-export default ()=>{
-    return <div>
-        <div>SecretProofTransaction</div>
-        <div>
-            <div></div>
-        </div>
+export default () => {
+  return (
+    <div>
+      <h2>SecretProofTransaction</h2>
+      <div>
+        <div></div>
+      </div>
     </div>
+  )
 }
