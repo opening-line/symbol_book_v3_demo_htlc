@@ -33,7 +33,8 @@ export default ({ address }: { address: string }) => {
             balance
               .toString()
               .replace(/^(.*)(.{6})$/, "$1.$2")
-              .replace(/\.0{6}$/, "") + " XYM",
+              .replace(/0*$/, "")
+              .replace(/\.$/, "") + " XYM",
           )
         }
       } catch (_e) {
