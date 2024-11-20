@@ -3,6 +3,9 @@ import { useEffect, useState } from "react"
 export default ({ address }: { address: string }) => {
   let [balance, setBalance] = useState("")
   useEffect(() => {
+    if ("" == address) {
+      return
+    }
     const interval = setInterval(async () => {
       const response = await fetch(import.meta.env.VITE_HARDHAT_RPC_ORIGIN, {
         method: "POST",
