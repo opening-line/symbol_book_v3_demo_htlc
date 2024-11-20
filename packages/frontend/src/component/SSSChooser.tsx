@@ -1,4 +1,5 @@
 import { useState } from "react"
+import XymBalance from "./XymBalance"
 
 export default () => {
   const [address, setAddress] = useState("")
@@ -23,7 +24,7 @@ export default () => {
         >
           SSSと接続
         </button>
-        {address}
+        {address}(<XymBalance address={address} />)
       </div>
     </div>
   )
