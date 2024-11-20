@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { EIP6963DetailContext } from "../context/EIP6963Detail"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { BrowserProvider } from "ethers"
+import EthBalance from "./EthBalance"
 
 export default () => {
   const detail = useContext(EIP6963DetailContext)
@@ -33,7 +34,7 @@ export default () => {
         >
           接続
         </button>
-        {address}
+        {address}(<EthBalance address={address} />)
       </div>
     </div>
   )
