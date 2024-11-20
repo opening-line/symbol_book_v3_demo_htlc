@@ -3,6 +3,9 @@ import { useEffect, useState } from "react"
 export default ({ address }: { address: string }) => {
   const [balance, setBalance] = useState("")
   useEffect(() => {
+    if ("" == address) {
+      return
+    }
     const interval = setInterval(async () => {
       const response = await fetch(
         import.meta.env.VITE_SYMBOL_API_ORIGIN + "/network/properties",
@@ -44,6 +47,6 @@ export default ({ address }: { address: string }) => {
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [address])
   return <>{balance}</>
 }
