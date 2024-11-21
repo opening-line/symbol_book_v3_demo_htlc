@@ -36,11 +36,9 @@ export default () => {
               const factory = new HTLC__factory(
                 await browserProvider.getSigner(),
               )
-              if (payload.length == 0) {
-                const raw = new Uint8Array(1024)
-                crypto.getRandomValues(raw)
-                setPayload(raw)
-              }
+              const raw = new Uint8Array(1024)
+              crypto.getRandomValues(raw)
+              setPayload(raw)
               const contract = await factory.deploy(
                 counterparty,
                 BigInt(Math.floor(new Date().valueOf() / 1000 + 20 * 60)),
