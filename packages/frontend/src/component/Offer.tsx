@@ -43,7 +43,7 @@ export default () => {
               }
               const contract = await factory.deploy(
                 counterparty,
-                BigInt(Math.floor(new Date().valueOf()/1000+20*60)),
+                BigInt(Math.floor(new Date().valueOf() / 1000 + 20 * 60)),
                 keccak256(payload),
                 new Address(
                   (window as unknown as { SSS: { activeAddress: string } }).SSS
