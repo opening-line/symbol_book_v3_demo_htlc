@@ -1,0 +1,63 @@
+import { HTLC__factory } from "contracts"
+import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import { useContext, useEffect, useState } from "react"
+import { PayloadContext } from "../context/Payload"
+import { keccak256 } from "ethers"
+import { Address } from "symbol-sdk/symbol"
+
+export default () => {
+  const [browserProvider, _setBrowserProvider] = useContext(
+    EthersBrowserProviderContext,
+  )
+  const [payload, setPayload] = useContext(PayloadContext)
+  const [offerButtonDisabled, setOfferButtonDisabled] = useState(true)
+  useEffect(() => {
+    setOfferButtonDisabled(undefined === browserProvider)
+  }, [browserProvider])
+  const [counterparty, setCounterparty] = useState("")
+  return (
+    <div>
+      <h2>お取引を提案</h2>
+      <div>
+        <div>
+          お取引先のETHのアドレス
+          <input
+            type='text'
+            value={counterparty}
+            onChange={(e) => {
+              setCounterparty(e.target.value)
+            }}
+          />
+        </div>
+        <div>
+          <button
+            disabled={offerButtonDisabled}
+            onClick={async () => {
+              const factory = new HTLC__factory(
+                await browserProvider.getSigner(),
+              )
+              if (payload.length == 0) {
+                const raw = new Uint8Array(1024)
+                crypto.getRandomValues(raw)
+                setPayload(raw)
+              }
+              const contract = await factory.deploy(
+                counterparty,
+                120,
+                keccak256(payload),
+                new Address(
+                  (window as unknown as { SSS: { activeAddress: string } }).SSS
+                    .activeAddress,
+                ).bytes,
+                { value: 1000000000000000000n },
+              )
+              await contract.waitForDeployment()
+            }}
+          >
+            提案
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
