@@ -9,6 +9,7 @@ export default () => {
   const [browserProvider, setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
+  const [provider,setProvider]=useState<any>(undefined);
   const [address, setAddress] = useState("")
   return (
     <div>
@@ -20,7 +21,7 @@ export default () => {
             name='eip6963'
             value={i}
             onChange={(_event) => {
-              setBrowserProvider(new BrowserProvider(d.provider))
+              setProvider(d.provider)
             }}
           />
           {d.info.name}
@@ -29,7 +30,9 @@ export default () => {
       <div>
         <button
           onClick={async (_event) => {
-            setAddress(await (await browserProvider.getSigner()).getAddress())
+            const newBrowserProvider=new BrowserProvider(provider);
+            setAddress(await (await newBrowserProvider.getSigner()).getAddress())
+            setBrowserProvider(newBrowserProvider)
           }}
         >
           接続
