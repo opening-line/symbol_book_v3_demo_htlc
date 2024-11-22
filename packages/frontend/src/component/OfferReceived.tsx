@@ -110,9 +110,10 @@ export default () => {
                               BigInt(
                                 Math.floor(
                                   (Number(event[3]) * 1000 -
-                                    new Date().valueOf() -
-                                    60000) /
-                                    30000,
+                                    new Date().valueOf()) /
+                                    1000 /
+                                    30 -
+                                    1,
                                 ),
                               ),
                             ),

@@ -1,15 +1,20 @@
 import { HTLC__factory } from "contracts"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { useContext, useEffect, useState } from "react"
-import { PayloadContext } from "../context/Payload"
 import { keccak256 } from "ethers"
-import { Address } from "symbol-sdk/symbol"
+import {
+  Address,
+  descriptors,
+  models,
+  Network,
+  SymbolFacade,
+} from "symbol-sdk/symbol"
+import { Hash256, PublicKey } from "symbol-sdk"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
-  const [_payload, setPayload] = useContext(PayloadContext)
   const [offerButtonDisabled, setOfferButtonDisabled] = useState(true)
   useEffect(() => {
     setOfferButtonDisabled(undefined === browserProvider)
@@ -36,7 +41,7 @@ export default () => {
               const factory = new HTLC__factory(
                 await browserProvider.getSigner(),
               )
-              const raw = new Uint8Array(1024)
+              const raw = new Uint8Array(20)
               crypto.getRandomValues(raw)
               const contract = await factory.deploy(
                 counterparty,
@@ -49,7 +54,101 @@ export default () => {
                 { value: 1000000000000000000n },
               )
               await contract.waitForDeployment()
-              setPayload(raw)
+              const ws = new WebSocket(
+                import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(/^http/, "ws") +
+                  "/ws",
+              )
+              let uid: string | undefined = undefined
+              const topic =
+                "confirmedAdded/" +
+                (
+                  window as unknown as {
+                    SSS: { activeAddress: string }
+                  }
+                ).SSS.activeAddress
+              ws.onmessage = async (event) => {
+                if (typeof event.data !== "string") {
+                  return
+                }
+                const json = JSON.parse(event.data)
+                if (uid === undefined && json.uid !== undefined) {
+                  uid = json.uid
+                  ws.send(
+                    JSON.stringify({
+                      uid,
+                      subscribe: topic,
+                    }),
+                  )
+                }
+                if (uid === undefined) {
+                  return
+                }
+                if (json.topic == topic) {
+                  console.log(json)
+                  if (
+                    json.data.transaction.secret ==
+                      keccak256(raw).replace(/^0x/, "").toUpperCase() &&
+                    json.data.transaction.amount == "1000000"
+                  ) {
+                    const facade = new SymbolFacade(Network.TESTNET)
+
+                    const unsigned =
+                      facade.createTransactionFromTypedDescriptor(
+                        new descriptors.SecretProofTransactionV1Descriptor(
+                          new Address(
+                            (
+                              window as unknown as {
+                                SSS: { activeAddress: string }
+                              }
+                            ).SSS.activeAddress,
+                          ),
+                          new Hash256(
+                            Uint8Array.from(
+                              json.data.transaction.secret
+                                .match(/../g)
+                                .map((s: string) => parseInt(s, 16)),
+                            ),
+                          ),
+                          models.LockHashAlgorithm.SHA3_256,
+                          raw,
+                        ),
+                        new PublicKey(
+                          (
+                            window as unknown as {
+                              SSS: { activePublicKey: string }
+                            }
+                          ).SSS.activePublicKey,
+                        ),
+                        1000,
+                        60,
+                        0,
+                      )
+                    ;(
+                      window as unknown as {
+                        SSS: { setTransactionByPayload: (_1: string) => void }
+                      }
+                    ).SSS.setTransactionByPayload(
+                      Array.from(unsigned.serialize())
+                        .map((b) => b.toString(16).padStart(2, "0"))
+                        .join(""),
+                    )
+                    const signed = await (
+                      window as unknown as {
+                        SSS: { requestSign: () => Promise<any> }
+                      }
+                    ).SSS.requestSign()
+                    await fetch(
+                      import.meta.env.VITE_SYMBOL_API_ORIGIN + "/transactions",
+                      {
+                        method: "PUT",
+                        body: JSON.stringify({ payload: signed.payload }),
+                        headers: { "Content-Type": "application/json" },
+                      },
+                    )
+                    console.log(signed.payload)
+                  }
+                }
+              }
             }}
           >
             提案
