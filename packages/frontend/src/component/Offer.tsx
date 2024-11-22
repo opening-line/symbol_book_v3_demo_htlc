@@ -9,7 +9,7 @@ export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
-  const [payload, setPayload] = useContext(PayloadContext)
+  const [_payload, setPayload] = useContext(PayloadContext)
   const [offerButtonDisabled, setOfferButtonDisabled] = useState(true)
   useEffect(() => {
     setOfferButtonDisabled(undefined === browserProvider)
@@ -38,11 +38,10 @@ export default () => {
               )
               const raw = new Uint8Array(1024)
               crypto.getRandomValues(raw)
-              setPayload(raw)
               const contract = await factory.deploy(
                 counterparty,
                 BigInt(Math.floor(new Date().valueOf() / 1000 + 20 * 60)),
-                keccak256(payload),
+                keccak256(raw),
                 new Address(
                   (window as unknown as { SSS: { activeAddress: string } }).SSS
                     .activeAddress,
@@ -50,6 +49,7 @@ export default () => {
                 { value: 1000000000000000000n },
               )
               await contract.waitForDeployment()
+              setPayload(raw)
             }}
           >
             提案
