@@ -6,10 +6,10 @@ import EthBalance from "./EthBalance"
 
 export default () => {
   const detail = useContext(EIP6963DetailContext)
-  const [browserProvider, setBrowserProvider] = useContext(
+  const [_browserProvider, setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
-  const [provider,setProvider]=useState<any>(undefined);
+  const [provider, setProvider] = useState<any>(undefined)
   const [address, setAddress] = useState("")
   return (
     <div>
@@ -30,8 +30,10 @@ export default () => {
       <div>
         <button
           onClick={async (_event) => {
-            const newBrowserProvider=new BrowserProvider(provider);
-            setAddress(await (await newBrowserProvider.getSigner()).getAddress())
+            const newBrowserProvider = new BrowserProvider(provider)
+            setAddress(
+              await (await newBrowserProvider.getSigner()).getAddress(),
+            )
             setBrowserProvider(newBrowserProvider)
           }}
         >
