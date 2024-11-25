@@ -10,6 +10,7 @@ import {
   SymbolFacade,
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
+import { subscribe } from "diagnostics_channel"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
@@ -73,6 +74,14 @@ export default () => {
                 const json = JSON.parse(event.data)
                 if (uid === undefined && json.uid !== undefined) {
                   uid = json.uid
+                  ws.send(
+                    JSON.stringify(
+                      {
+                        uid,
+                        subscribe:'block',
+                      }
+                    )
+                  )
                   ws.send(
                     JSON.stringify({
                       uid,
@@ -144,6 +153,7 @@ export default () => {
                         headers: { "Content-Type": "application/json" },
                       },
                     )
+                    ws.close();
                   }
                 }
               }
