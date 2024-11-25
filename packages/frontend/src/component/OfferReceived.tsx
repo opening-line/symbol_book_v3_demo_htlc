@@ -31,7 +31,6 @@ export default () => {
         }
       })
       if (remove.length > 0) {
-        console.log(offer)
         const offer_cloned = Array.from(offer)
         remove.forEach((i) => {
           offer_cloned.splice(i, 1)
@@ -161,6 +160,54 @@ export default () => {
                           headers: { "Content-Type": "application/json" },
                         },
                       )
+                      const ws = new WebSocket(
+                        import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(
+                          /^http/,
+                          "ws",
+                        ) + "/ws",
+                      )
+                      let uid: string | undefined = undefined
+                      const topic =
+                        "confirmedAdded/" + counterpartyAddressXym.toString()
+                      ws.onmessage = async (event) => {
+                        if (typeof event.data !== "string") {
+                          return
+                        }
+                        const json = JSON.parse(event.data)
+                        if (uid === undefined && json.uid !== undefined) {
+                          uid = json.uid
+                          ws.send(
+                            JSON.stringify({
+                              uid,
+                              subscribe: "block",
+                            }),
+                          )
+                          ws.send(
+                            JSON.stringify({
+                              uid,
+                              subscribe: topic,
+                            }),
+                          )
+                        }
+                        if (uid === undefined) {
+                          return
+                        }
+                        if (json.topic == topic) {
+                          console.log(json)
+                          const preimage = Uint8Array.from(
+                            json.data.transaction.proof
+                              .match(/../g)
+                              .map((s: string) => Number("0x" + s)),
+                          )
+                          const htlc = HTLC__factory.connect(
+                            e.address,
+                            await browserProvider.getSigner(),
+                          )
+                          await htlc.redeem(preimage)
+                          ws.close()
+                          window.alert("お取引が完了しました")
+                        }
+                      }
                     }}
                   >
                     お取引

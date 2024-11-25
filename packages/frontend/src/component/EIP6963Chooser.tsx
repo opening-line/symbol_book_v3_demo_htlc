@@ -30,7 +30,7 @@ export default () => {
       <div>
         <button
           onClick={async (_event) => {
-            const newBrowserProvider = new BrowserProvider(provider)
+            const newBrowserProvider = new BrowserProvider(provider,31337)
             setAddress(
               await (await newBrowserProvider.getSigner()).getAddress(),
             )
