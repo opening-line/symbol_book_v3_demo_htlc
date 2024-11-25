@@ -10,7 +10,6 @@ import {
   SymbolFacade,
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
-import { subscribe } from "diagnostics_channel"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
