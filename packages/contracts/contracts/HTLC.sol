@@ -23,7 +23,7 @@ contract HTLC{
     }
 
     function redeem(bytes calldata preimage)external{
-        require(keccak256(preimage)==hash);
+        require(sha256(abi.encodePacked(sha256(abi.encodePacked(preimage))))==hash);
         require(block.timestamp<timelock);
         to.transfer(value);
         emit Redeemed(hash,preimage);

@@ -1,7 +1,7 @@
 import { HTLC__factory } from "contracts"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { useContext, useEffect, useState } from "react"
-import { keccak256 } from "ethers"
+import {sha256} from '@noble/hashes/sha256'
 import {
   Address,
   descriptors,
@@ -46,7 +46,7 @@ export default () => {
               const contract = await factory.deploy(
                 counterparty,
                 BigInt(Math.floor(new Date().valueOf() / 1000 + 20 * 60)),
-                keccak256(raw),
+                sha256(sha256(raw)),
                 new Address(
                   (window as unknown as { SSS: { activeAddress: string } }).SSS
                     .activeAddress,
@@ -84,10 +84,9 @@ export default () => {
                   return
                 }
                 if (json.topic == topic) {
-                  console.log(json)
                   if (
                     json.data.transaction.secret ==
-                      keccak256(raw).replace(/^0x/, "").toUpperCase() &&
+                      Array.from(sha256(sha256(raw))).map(s=>s.toString(16).padStart(2,'0')).join('').toUpperCase() &&
                     json.data.transaction.amount == "1000000"
                   ) {
                     const facade = new SymbolFacade(Network.TESTNET)
@@ -109,7 +108,7 @@ export default () => {
                                 .map((s: string) => parseInt(s, 16)),
                             ),
                           ),
-                          models.LockHashAlgorithm.SHA3_256,
+                          models.LockHashAlgorithm.HASH_256,
                           raw,
                         ),
                         new PublicKey(
@@ -145,7 +144,6 @@ export default () => {
                         headers: { "Content-Type": "application/json" },
                       },
                     )
-                    console.log(signed.payload)
                   }
                 }
               }
