@@ -1,7 +1,7 @@
 import { HTLC__factory } from "contracts"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { useContext, useEffect, useState } from "react"
-import {sha256} from '@noble/hashes/sha256'
+import { sha256 } from "@noble/hashes/sha256"
 import {
   Address,
   descriptors,
@@ -75,12 +75,10 @@ export default () => {
                 if (uid === undefined && json.uid !== undefined) {
                   uid = json.uid
                   ws.send(
-                    JSON.stringify(
-                      {
-                        uid,
-                        subscribe:'block',
-                      }
-                    )
+                    JSON.stringify({
+                      uid,
+                      subscribe: "block",
+                    }),
                   )
                   ws.send(
                     JSON.stringify({
@@ -95,7 +93,10 @@ export default () => {
                 if (json.topic == topic) {
                   if (
                     json.data.transaction.secret ==
-                      Array.from(sha256(sha256(raw))).map(s=>s.toString(16).padStart(2,'0')).join('').toUpperCase() &&
+                      Array.from(sha256(sha256(raw)))
+                        .map((s) => s.toString(16).padStart(2, "0"))
+                        .join("")
+                        .toUpperCase() &&
                     json.data.transaction.amount == "1000000"
                   ) {
                     const facade = new SymbolFacade(Network.TESTNET)
@@ -153,7 +154,7 @@ export default () => {
                         headers: { "Content-Type": "application/json" },
                       },
                     )
-                    ws.close();
+                    ws.close()
                   }
                 }
               }

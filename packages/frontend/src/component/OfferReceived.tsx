@@ -99,7 +99,14 @@ export default () => {
                         facade.createTransactionFromTypedDescriptor(
                           new descriptors.SecretLockTransactionV1Descriptor(
                             counterpartyAddressXym,
-                            new Hash256((Uint8Array.from(event[4].replace('0x','').match(/../g).map((s:string)=>Number('0x'+s))))),
+                            new Hash256(
+                              Uint8Array.from(
+                                event[4]
+                                  .replace("0x", "")
+                                  .match(/../g)
+                                  .map((s: string) => Number("0x" + s)),
+                              ),
+                            ),
                             new descriptors.UnresolvedMosaicDescriptor(
                               new models.UnresolvedMosaicId(
                                 generateMosaicAliasId("symbol.xym"),
