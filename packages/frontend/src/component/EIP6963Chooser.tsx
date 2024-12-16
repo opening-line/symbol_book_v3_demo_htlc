@@ -11,6 +11,11 @@ export default () => {
   )
   const [provider, setProvider] = useState<any>(undefined)
   const [address, setAddress] = useState("")
+  const onButtonClick = async (_event: React.MouseEvent<HTMLButtonElement>) => {
+    const newBrowserProvider = new BrowserProvider(provider, 31337)
+    setAddress(await (await newBrowserProvider.getSigner()).getAddress())
+    setBrowserProvider(newBrowserProvider)
+  }
   return (
     <div>
       <h2>EIP-6963対応ウォレット</h2>
@@ -28,17 +33,7 @@ export default () => {
         </label>
       ))}
       <div>
-        <button
-          onClick={async (_event) => {
-            const newBrowserProvider = new BrowserProvider(provider,31337)
-            setAddress(
-              await (await newBrowserProvider.getSigner()).getAddress(),
-            )
-            setBrowserProvider(newBrowserProvider)
-          }}
-        >
-          接続
-        </button>
+        <button onClick={onButtonClick}>接続</button>
         {address}(<EthBalance address={address} />)
       </div>
     </div>
