@@ -70,9 +70,123 @@ export default () => {
       provider.destroy()
     }
   }, [browserProvider])
+  const onButtonClickFactory = (
+    e: any,
+    event: any,
+    buttonRef: React.RefObject<HTMLButtonElement>,
+    counterpartyAddressXym: Address,
+  ) => {
+    return async () => {
+      const facade = new SymbolFacade(Network.TESTNET)
+      const transaction = facade.createTransactionFromTypedDescriptor(
+        new descriptors.SecretLockTransactionV1Descriptor(
+          counterpartyAddressXym,
+          new Hash256(
+            Uint8Array.from(
+              event[4]
+                .replace("0x", "")
+                .match(/../g)
+                .map((s: string) => Number("0x" + s)),
+            ),
+          ),
+          new descriptors.UnresolvedMosaicDescriptor(
+            new models.UnresolvedMosaicId(generateMosaicAliasId("symbol.xym")),
+            new models.Amount(1000000n),
+          ),
+          new models.BlockDuration(
+            BigInt(
+              Math.floor(
+                (Number(event[3]) * 1000 - new Date().valueOf()) / 1000 / 30 -
+                  1,
+              ),
+            ),
+          ),
+          models.LockHashAlgorithm.HASH_256,
+        ),
+        new PublicKey(
+          (
+            window as unknown as {
+              SSS: { activePublicKey: string }
+            }
+          ).SSS.activePublicKey,
+        ),
+        100,
+        60,
+        0,
+      )
+      ;(
+        window as unknown as {
+          SSS: { setTransactionByPayload: (_1: string) => void }
+        }
+      ).SSS.setTransactionByPayload(
+        Array.from<number>(transaction.serialize())
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join(""),
+      )
+      const signed = await (
+        window as unknown as {
+          SSS: { requestSign: () => Promise<any> }
+        }
+      ).SSS.requestSign()
+      buttonRef.current!.disabled = true
+      await fetch(import.meta.env.VITE_SYMBOL_API_ORIGIN + "/transactions", {
+        method: "PUT",
+        body: JSON.stringify({ payload: signed.payload }),
+        headers: { "Content-Type": "application/json" },
+      })
+      const ws = new WebSocket(
+        import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(/^http/, "ws") + "/ws",
+      )
+      let uid: string | undefined = undefined
+      const topic = "confirmedAdded/" + counterpartyAddressXym.toString()
+      ws.onmessage = async (event) => {
+        if (typeof event.data !== "string") {
+          return
+        }
+        const json = JSON.parse(event.data)
+        if (uid === undefined && json.uid !== undefined) {
+          uid = json.uid
+          ws.send(
+            JSON.stringify({
+              uid,
+              subscribe: "block",
+            }),
+          )
+          ws.send(
+            JSON.stringify({
+              uid,
+              subscribe: topic,
+            }),
+          )
+        }
+        if (uid === undefined) {
+          return
+        }
+        if (json.topic == topic) {
+          console.log(json)
+          const preimage = Uint8Array.from(
+            json.data.transaction.proof
+              .match(/../g)
+              .map((s: string) => Number("0x" + s)),
+          )
+          const htlc = HTLC__factory.connect(
+            e.address,
+            await browserProvider.getSigner(),
+          )
+          await htlc.redeem(preimage)
+          ws.close()
+          window.alert("お取引が完了しました")
+        }
+      }
+    }
+  }
   return (
     <div>
-      <h2>お取引のご提案</h2>
+      <h2
+	  style={{
+		color: "red",
+	  }}
+	  >お取引のご提案</h2>
       <div>
         {offer.length == 0
           ? "ございません"
@@ -92,123 +206,12 @@ export default () => {
                   <div>{counterpartyAddressXym.toString()}</div>
                   <button
                     ref={buttonRef}
-                    onClick={async () => {
-                      const facade = new SymbolFacade(Network.TESTNET)
-                      const transaction =
-                        facade.createTransactionFromTypedDescriptor(
-                          new descriptors.SecretLockTransactionV1Descriptor(
-                            counterpartyAddressXym,
-                            new Hash256(
-                              Uint8Array.from(
-                                event[4]
-                                  .replace("0x", "")
-                                  .match(/../g)
-                                  .map((s: string) => Number("0x" + s)),
-                              ),
-                            ),
-                            new descriptors.UnresolvedMosaicDescriptor(
-                              new models.UnresolvedMosaicId(
-                                generateMosaicAliasId("symbol.xym"),
-                              ),
-                              new models.Amount(1000000n),
-                            ),
-                            new models.BlockDuration(
-                              BigInt(
-                                Math.floor(
-                                  (Number(event[3]) * 1000 -
-                                    new Date().valueOf()) /
-                                    1000 /
-                                    30 -
-                                    1,
-                                ),
-                              ),
-                            ),
-                            models.LockHashAlgorithm.HASH_256,
-                          ),
-                          new PublicKey(
-                            (
-                              window as unknown as {
-                                SSS: { activePublicKey: string }
-                              }
-                            ).SSS.activePublicKey,
-                          ),
-                          100,
-                          60,
-                          0,
-                        )
-                      ;(
-                        window as unknown as {
-                          SSS: { setTransactionByPayload: (_1: string) => void }
-                        }
-                      ).SSS.setTransactionByPayload(
-                        Array.from(transaction.serialize())
-                          .map((b) => b.toString(16).padStart(2, "0"))
-                          .join(""),
-                      )
-                      const signed = await (
-                        window as unknown as {
-                          SSS: { requestSign: () => Promise<any> }
-                        }
-                      ).SSS.requestSign()
-                      buttonRef.current!.disabled = true
-                      await fetch(
-                        import.meta.env.VITE_SYMBOL_API_ORIGIN +
-                          "/transactions",
-                        {
-                          method: "PUT",
-                          body: JSON.stringify({ payload: signed.payload }),
-                          headers: { "Content-Type": "application/json" },
-                        },
-                      )
-                      const ws = new WebSocket(
-                        import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(
-                          /^http/,
-                          "ws",
-                        ) + "/ws",
-                      )
-                      let uid: string | undefined = undefined
-                      const topic =
-                        "confirmedAdded/" + counterpartyAddressXym.toString()
-                      ws.onmessage = async (event) => {
-                        if (typeof event.data !== "string") {
-                          return
-                        }
-                        const json = JSON.parse(event.data)
-                        if (uid === undefined && json.uid !== undefined) {
-                          uid = json.uid
-                          ws.send(
-                            JSON.stringify({
-                              uid,
-                              subscribe: "block",
-                            }),
-                          )
-                          ws.send(
-                            JSON.stringify({
-                              uid,
-                              subscribe: topic,
-                            }),
-                          )
-                        }
-                        if (uid === undefined) {
-                          return
-                        }
-                        if (json.topic == topic) {
-                          console.log(json)
-                          const preimage = Uint8Array.from(
-                            json.data.transaction.proof
-                              .match(/../g)
-                              .map((s: string) => Number("0x" + s)),
-                          )
-                          const htlc = HTLC__factory.connect(
-                            e.address,
-                            await browserProvider.getSigner(),
-                          )
-                          await htlc.redeem(preimage)
-                          ws.close()
-                          window.alert("お取引が完了しました")
-                        }
-                      }
-                    }}
+                    onClick={onButtonClickFactory(
+                      e,
+                      event,
+                      buttonRef,
+                      counterpartyAddressXym,
+                    )}
                   >
                     お取引
                   </button>

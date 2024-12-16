@@ -1,5 +1,4 @@
 import { BrowserProvider } from "ethers"
-import {} from "ethers"
 import { createContext, FC, PropsWithChildren, useState } from "react"
 
 export const EthersBrowserProviderContext = createContext<
