@@ -18,7 +18,11 @@ export default () => {
   }
   return (
     <div>
-      <h2>EIP-6963対応ウォレット</h2>
+      <h2
+		style={{
+			color: "red",
+		}}
+	  >EIP-6963対応ウォレット</h2>
       {detail.map((d, i) => (
         <label key={i}>
           <input
