@@ -136,7 +136,7 @@ export default () => {
                         SSS: { setTransactionByPayload: (_1: string) => void }
                       }
                     ).SSS.setTransactionByPayload(
-                      Array.from(unsigned.serialize())
+                      Array.from<number>(unsigned.serialize())
                         .map((b) => b.toString(16).padStart(2, "0"))
                         .join(""),
                     )

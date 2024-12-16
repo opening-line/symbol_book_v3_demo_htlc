@@ -141,7 +141,7 @@ export default () => {
                           SSS: { setTransactionByPayload: (_1: string) => void }
                         }
                       ).SSS.setTransactionByPayload(
-                        Array.from(transaction.serialize())
+                        Array.from<number>(transaction.serialize())
                           .map((b) => b.toString(16).padStart(2, "0"))
                           .join(""),
                       )
