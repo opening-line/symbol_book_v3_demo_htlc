@@ -19,10 +19,12 @@ export default () => {
   return (
     <div>
       <h2
-	  style={{
-		color: "red",
-	  }}
-	  >SSS Extension</h2>
+        style={{
+          color: "red",
+        }}
+      >
+        SSS Extension
+      </h2>
       <div>
         <button onClick={onButtonClick}>SSSと接続</button>
         {address}(<XymBalance address={address} />)
