@@ -183,10 +183,12 @@ export default () => {
   return (
     <div>
       <h2
-	  style={{
-		color: "red",
-	  }}
-	  >お取引のご提案</h2>
+        style={{
+          color: "red",
+        }}
+      >
+        お取引のご提案
+      </h2>
       <div>
         {offer.length == 0
           ? "ございません"
