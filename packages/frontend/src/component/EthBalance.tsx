@@ -32,5 +32,7 @@ const formatBalance = (balance: bigint) => {
   const wholeNumberPart = balanceStr.slice(0, -18)
   const fractionalPart = balanceStr.slice(-18).replace(/0*$/, "")
 
-  return fractionalPart ? `${wholeNumberPart}.${fractionalPart} ETH` : `${wholeNumberPart} ETH`
+  return fractionalPart
+    ? `${wholeNumberPart}.${fractionalPart} ETH`
+    : `${wholeNumberPart} ETH`
 }
