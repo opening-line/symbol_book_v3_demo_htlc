@@ -22,6 +22,7 @@ export default function () {
 			>
 				<h1
 					style={{
+						fontStyle:"oblique 45deg",
 						color: "cyan",
 						padding: "12pt",
 					}}
