@@ -10,6 +10,7 @@ import {
   SymbolFacade,
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
+import { getActiveAddress, getActivePublicKey, requestSign, setTransactionByPayload } from "sss-module"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
@@ -24,13 +25,13 @@ export default () => {
     const factory = new HTLC__factory(await browserProvider.getSigner())
     const raw = new Uint8Array(20)
     crypto.getRandomValues(raw)
+    const activeAddress = getActiveAddress()
     const contract = await factory.deploy(
       counterparty,
       BigInt(Math.floor(new Date().valueOf() / 1000 + 20 * 60)),
       sha256(sha256(raw)),
       new Address(
-        (window as unknown as { SSS: { activeAddress: string } }).SSS
-          .activeAddress,
+        activeAddress
       ).bytes,
       { value: 1000000000000000000n },
     )
@@ -40,18 +41,13 @@ export default () => {
     )
     let uid: string | undefined = undefined
     const topic =
-      "confirmedAdded/" +
-      (
-        window as unknown as {
-          SSS: { activeAddress: string }
-        }
-      ).SSS.activeAddress
+      "confirmedAdded/" + activeAddress
     ws.onmessage = async (event) => {
       if (typeof event.data !== "string") {
         return
       }
       const json = JSON.parse(event.data)
-      if (uid === undefined && json.uid !== undefined) {
+      if (uid === undefined && json.uid !== undefined) { // FIXME: この時点でuidがundefinedでないことはあり得ない
         uid = json.uid
         ws.send(
           JSON.stringify({
@@ -72,7 +68,7 @@ export default () => {
       if (json.topic == topic) {
         if (
           json.data.transaction.secret ==
-            Array.from(sha256(sha256(raw)))
+            Array.from(sha256(sha256(raw))) // FIXME: インラインで処理しない
               .map((s) => s.toString(16).padStart(2, "0"))
               .join("")
               .toUpperCase() &&
@@ -82,14 +78,8 @@ export default () => {
 
           const unsigned = facade.createTransactionFromTypedDescriptor(
             new descriptors.SecretProofTransactionV1Descriptor(
-              new Address(
-                (
-                  window as unknown as {
-                    SSS: { activeAddress: string }
-                  }
-                ).SSS.activeAddress,
-              ),
-              new Hash256(
+              new Address(activeAddress),
+              new Hash256( // FIXME: インラインで処理しない
                 Uint8Array.from(
                   json.data.transaction.secret
                     .match(/../g)
@@ -99,31 +89,17 @@ export default () => {
               models.LockHashAlgorithm.HASH_256,
               raw,
             ),
-            new PublicKey(
-              (
-                window as unknown as {
-                  SSS: { activePublicKey: string }
-                }
-              ).SSS.activePublicKey,
-            ),
+            new PublicKey(getActivePublicKey()),
             1000,
             60,
             0,
           )
-          ;(
-            window as unknown as {
-              SSS: { setTransactionByPayload: (_1: string) => void }
-            }
-          ).SSS.setTransactionByPayload(
+          setTransactionByPayload(
             Array.from<number>(unsigned.serialize())
               .map((b) => b.toString(16).padStart(2, "0"))
               .join(""),
           )
-          const signed = await (
-            window as unknown as {
-              SSS: { requestSign: () => Promise<any> }
-            }
-          ).SSS.requestSign()
+          const signed = await requestSign()
           await fetch(
             import.meta.env.VITE_SYMBOL_API_ORIGIN + "/transactions",
             {

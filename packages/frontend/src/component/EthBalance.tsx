@@ -17,20 +17,20 @@ export default ({ address }: { address: string }) => {
         }),
       })
       const json = await response.json()
-      const balance = BigInt(json.result)
-      setBalance(
-        balance < 1000000000000000000n
-          ? "0." + balance.toString().padStart(18, "0") + " ETH"
-          : balance
-              .toString()
-              .replace(/^(.*)(.{18})/, "$1.$2")
-              .replace(/0*$/, "")
-              .replace(/\.$/, "") + " ETH",
-      )
+      const userBalance = BigInt(json.result)
+      setBalance(formatBalance(userBalance))
     }, 2000)
     return () => {
       clearInterval(interval)
     }
   }, [address])
   return <>{balance}</>
+}
+
+const formatBalance = (balance: bigint) => {
+  const balanceStr = balance.toString().padStart(19, "0")
+  const wholeNumberPart = balanceStr.slice(0, -18)
+  const fractionalPart = balanceStr.slice(-18).replace(/0*$/, "")
+
+  return fractionalPart ? `${wholeNumberPart}.${fractionalPart} ETH` : `${wholeNumberPart} ETH`
 }

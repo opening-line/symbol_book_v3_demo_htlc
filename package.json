@@ -5,10 +5,10 @@
     "workspaces": [
         "packages/*"
     ],
-    "scripts":{
-        "dev":"nx run-many --target=dev --projects=contracts,frontend --parallel"
+    "scripts": {
+        "dev": "nx run-many --target=dev --projects=contracts,frontend --parallel"
     },
-    "devDependencies": {
+    "dependencies": {
         "nx": "^20.0.12"
     }
 }
