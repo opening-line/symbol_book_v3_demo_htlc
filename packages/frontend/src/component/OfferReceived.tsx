@@ -11,47 +11,60 @@ import {
   SymbolFacade,
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
+import {
+  getActiveAddress,
+  setTransactionByPayload,
+  requestSign,
+} from "sss-module"
 
-function createSecretLockTransaction(event:any,counterpartyAddressXym:Address){
-	const facade = new SymbolFacade(Network.TESTNET)
-	const digestBinary=Uint8Array.from(
-		event[4]
-		  .replace("0x", "")
-		  .match(/../g)
-		  .map((s: string) => Number("0x" + s)),
-	  )
-	const transaction = facade.createTransactionFromTypedDescriptor(
-	  new descriptors.SecretLockTransactionV1Descriptor(
-		counterpartyAddressXym,
-		new Hash256(
-		  digestBinary
-		),
-		new descriptors.UnresolvedMosaicDescriptor(
-		  new models.UnresolvedMosaicId(generateMosaicAliasId("symbol.xym")),
-		  new models.Amount(1000000n),
-		),
-		new models.BlockDuration(
-		  BigInt(
-			Math.floor(
-			  (Number(event[3]) * 1000 - new Date().valueOf()) / 1000 / 30 -
-				1,
-			),
-		  ),
-		),
-		models.LockHashAlgorithm.HASH_256,
-	  ),
-	  new PublicKey(
-		(
-		  window as unknown as {
-			SSS: { activePublicKey: string }
-		  }
-		).SSS.activePublicKey,
-	  ),
-	  100,
-	  60,
-	  0,
-	)
-	return [transaction]
+function createSecretLockTransaction(
+  event: any,
+  counterpartyAddressXym: Address,
+) {
+  const facade = new SymbolFacade(Network.TESTNET)
+  const digestBinary = Uint8Array.from(
+    event[4]
+      .replace("0x", "")
+      .match(/../g)
+      .map((s: string) => Number("0x" + s)),
+  )
+  const transaction = facade.createTransactionFromTypedDescriptor(
+    new descriptors.SecretLockTransactionV1Descriptor(
+      counterpartyAddressXym,
+      new Hash256(digestBinary),
+      new descriptors.UnresolvedMosaicDescriptor(
+        new models.UnresolvedMosaicId(generateMosaicAliasId("symbol.xym")),
+        new models.Amount(1000000n),
+      ),
+      new models.BlockDuration(
+        BigInt(
+          Math.floor(
+            (Number(event[3]) * 1000 - new Date().valueOf()) / 1000 / 30 - 1,
+          ),
+        ),
+      ),
+      models.LockHashAlgorithm.HASH_256,
+    ),
+    new PublicKey(
+      (
+        window as unknown as {
+          SSS: { activePublicKey: string }
+        }
+      ).SSS.activePublicKey,
+    ),
+    100,
+    60,
+    0,
+  )
+  return [transaction]
+}
+
+async function announceSecretLockTransaction(signed: { payload: string }) {
+  await fetch(import.meta.env.VITE_SYMBOL_API_ORIGIN + "/transactions", {
+    method: "PUT",
+    body: JSON.stringify({ payload: signed.payload }),
+    headers: { "Content-Type": "application/json" },
+  })
 }
 
 export default () => {
@@ -119,27 +132,19 @@ export default () => {
     counterpartyAddressXym: Address,
   ) => {
     return async () => {
-		const [transaction]=createSecretLockTransaction(event,counterpartyAddressXym)
-      ;(
-        window as unknown as {
-          SSS: { setTransactionByPayload: (_1: string) => void }
-        }
-      ).SSS.setTransactionByPayload(
-        Array.from<number>(transaction.serialize())
-          .map((b) => b.toString(16).padStart(2, "0"))
-          .join(""),
+      const [transaction] = createSecretLockTransaction(
+        event,
+        counterpartyAddressXym,
       )
-      const signed = await (
-        window as unknown as {
-          SSS: { requestSign: () => Promise<any> }
-        }
-      ).SSS.requestSign()
+      const unsignedTransactionHexadecimal = Array.from<number>(
+        transaction.serialize(),
+      )
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+      setTransactionByPayload(unsignedTransactionHexadecimal)
+      const signed = await requestSign()
       buttonRef.current!.disabled = true
-      await fetch(import.meta.env.VITE_SYMBOL_API_ORIGIN + "/transactions", {
-        method: "PUT",
-        body: JSON.stringify({ payload: signed.payload }),
-        headers: { "Content-Type": "application/json" },
-      })
+      await announceSecretLockTransaction(signed)
       const ws = new WebSocket(
         import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(/^http/, "ws") + "/ws",
       )
