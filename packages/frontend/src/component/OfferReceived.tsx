@@ -12,7 +12,6 @@ import {
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
 import {
-  getActiveAddress,
   setTransactionByPayload,
   requestSign,
 } from "sss-module"
