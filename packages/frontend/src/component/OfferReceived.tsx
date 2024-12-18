@@ -11,10 +11,7 @@ import {
   SymbolFacade,
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
-import {
-  setTransactionByPayload,
-  requestSign,
-} from "sss-module"
+import { setTransactionByPayload, requestSign } from "sss-module"
 
 function createSecretLockTransaction(
   event: any,
