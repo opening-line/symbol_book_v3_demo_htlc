@@ -1,20 +1,17 @@
 import { useState } from "react"
 import XymBalance from "./XymBalance"
+import { getActiveAddress,isAllowedSSS } from "sss-module"
 
 export default () => {
   const [address, setAddress] = useState("")
   const onButtonClick = () => {
-    const sssIsAllowed = (
-      window as unknown as { isAllowedSSS: () => boolean }
-    ).isAllowedSSS()
+    const sssIsAllowed = isAllowedSSS()
     if (sssIsAllowed) {
       setAddress(
-        (window as unknown as { SSS: { activeAddress: string } }).SSS
-          .activeAddress,
+        getActiveAddress(),
       )
       return
     }
-    ;(window as unknown as { requestSSS: () => boolean }).requestSSS()
   }
   return (
     <div>
