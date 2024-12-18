@@ -1,5 +1,20 @@
 import { useEffect, useState } from "react"
 
+async function getBalance(address: string) {
+  const response = await fetch(import.meta.env.VITE_HARDHAT_RPC_ORIGIN, {
+    method: "POST",
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "eth_getBalance",
+      params: [address, "latest"],
+    }),
+  })
+  const json = await response.json()
+  const userBalance = BigInt(json.result)
+  return [userBalance]
+}
+
 export default ({ address }: { address: string }) => {
   let [balance, setBalance] = useState("")
   useEffect(() => {
@@ -7,17 +22,7 @@ export default ({ address }: { address: string }) => {
       return
     }
     const interval = setInterval(async () => {
-      const response = await fetch(import.meta.env.VITE_HARDHAT_RPC_ORIGIN, {
-        method: "POST",
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          id: 1,
-          method: "eth_getBalance",
-          params: [address, "latest"],
-        }),
-      })
-      const json = await response.json()
-      const userBalance = BigInt(json.result)
+      const [userBalance] = await getBalance(address)
       setBalance(formatBalance(userBalance))
     }, 2000)
     return () => {
