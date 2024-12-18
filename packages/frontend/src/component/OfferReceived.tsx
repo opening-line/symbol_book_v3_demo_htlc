@@ -12,6 +12,48 @@ import {
 } from "symbol-sdk/symbol"
 import { Hash256, PublicKey } from "symbol-sdk"
 
+function createSecretLockTransaction(event:any,counterpartyAddressXym:Address){
+	const facade = new SymbolFacade(Network.TESTNET)
+	const digestBinary=Uint8Array.from(
+		event[4]
+		  .replace("0x", "")
+		  .match(/../g)
+		  .map((s: string) => Number("0x" + s)),
+	  )
+	const transaction = facade.createTransactionFromTypedDescriptor(
+	  new descriptors.SecretLockTransactionV1Descriptor(
+		counterpartyAddressXym,
+		new Hash256(
+		  digestBinary
+		),
+		new descriptors.UnresolvedMosaicDescriptor(
+		  new models.UnresolvedMosaicId(generateMosaicAliasId("symbol.xym")),
+		  new models.Amount(1000000n),
+		),
+		new models.BlockDuration(
+		  BigInt(
+			Math.floor(
+			  (Number(event[3]) * 1000 - new Date().valueOf()) / 1000 / 30 -
+				1,
+			),
+		  ),
+		),
+		models.LockHashAlgorithm.HASH_256,
+	  ),
+	  new PublicKey(
+		(
+		  window as unknown as {
+			SSS: { activePublicKey: string }
+		  }
+		).SSS.activePublicKey,
+	  ),
+	  100,
+	  60,
+	  0,
+	)
+	return [transaction]
+}
+
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
@@ -77,43 +119,7 @@ export default () => {
     counterpartyAddressXym: Address,
   ) => {
     return async () => {
-      const facade = new SymbolFacade(Network.TESTNET)
-      const transaction = facade.createTransactionFromTypedDescriptor(
-        new descriptors.SecretLockTransactionV1Descriptor(
-          counterpartyAddressXym,
-          new Hash256(
-            Uint8Array.from(
-              event[4]
-                .replace("0x", "")
-                .match(/../g)
-                .map((s: string) => Number("0x" + s)),
-            ),
-          ),
-          new descriptors.UnresolvedMosaicDescriptor(
-            new models.UnresolvedMosaicId(generateMosaicAliasId("symbol.xym")),
-            new models.Amount(1000000n),
-          ),
-          new models.BlockDuration(
-            BigInt(
-              Math.floor(
-                (Number(event[3]) * 1000 - new Date().valueOf()) / 1000 / 30 -
-                  1,
-              ),
-            ),
-          ),
-          models.LockHashAlgorithm.HASH_256,
-        ),
-        new PublicKey(
-          (
-            window as unknown as {
-              SSS: { activePublicKey: string }
-            }
-          ).SSS.activePublicKey,
-        ),
-        100,
-        60,
-        0,
-      )
+		const [transaction]=createSecretLockTransaction(event,counterpartyAddressXym)
       ;(
         window as unknown as {
           SSS: { setTransactionByPayload: (_1: string) => void }
