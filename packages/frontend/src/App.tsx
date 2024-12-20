@@ -10,69 +10,21 @@ export default function () {
     <>
       <EthersBrowserProviderProvider>
         <EIP6963DetailProvider>
-          <main
-            style={{
-              padding: "0px",
-              margin: "0px",
-              backgroundColor: "black",
-              color: "white",
-            }}
-          >
-            <h1
-              style={{
-                fontStyle: "oblique 45deg",
-                color: "cyan",
-                padding: "12pt",
-              }}
-            >
+          <main>
+            <h1>
               クロスチェーンスワップアプリ
             </h1>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "10px",
-                padding: "12pt",
-              }}
-            >
-              <div
-                style={{
-                  borderColor: "cyan",
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  padding: "12pt",
-                }}
-              >
+            <div>
+              <div>
                 <EIP6963Chooser />
               </div>
-              <div
-                style={{
-                  borderColor: "cyan",
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  padding: "12pt",
-                }}
-              >
+              <div>
                 <SSSChooser />
               </div>
-              <div
-                style={{
-                  borderColor: "cyan",
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  padding: "12pt",
-                }}
-              >
+              <div>
                 <Offer />
               </div>
-              <div
-                style={{
-                  borderColor: "cyan",
-                  borderWidth: "1px",
-                  borderStyle: "solid",
-                  padding: "12pt",
-                }}
-              >
+              <div>
                 <OfferReceived />
               </div>
             </div>
