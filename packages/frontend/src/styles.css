@@ -1,18 +1,19 @@
 :root {
-  --background-color: #efefef;
+  --background-color: #f0f0f0;
   --primary-color: #31b454;
   --title-color: #282828;
   --text-color: #585858;
 }
 
 body {
-  margin: 12pt;
-  padding: 12pt;
+  margin: 0;
+  padding: 0;
   background-color: var(--background-color);
 }
 
 * {
   color: var(--text-color);
+  box-sizing: border-box;
 }
 
 h1,
