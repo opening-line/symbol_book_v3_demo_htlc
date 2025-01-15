@@ -4,12 +4,14 @@ import EIP6963Chooser from "./component/EIP6963Chooser"
 import SSSChooser from "./component/SSSChooser"
 import OfferReceived from "./component/OfferReceived"
 import Offer from "./component/Offer"
+import Header from "./component/Header"
 
 export default function () {
   return (
     <>
       <EthersBrowserProviderProvider>
         <EIP6963DetailProvider>
+          <Header />
           <main>
             <h1>クロスチェーンスワップアプリ</h1>
             <div>
