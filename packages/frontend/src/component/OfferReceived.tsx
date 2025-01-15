@@ -189,9 +189,7 @@ export default () => {
   }
   return (
     <div>
-      <h2>
-        お取引のご提案
-      </h2>
+      <h2>お取引のご提案</h2>
       <div>
         {offer.length == 0
           ? "ございません"

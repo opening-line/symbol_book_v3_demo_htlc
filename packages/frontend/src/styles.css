@@ -1,19 +1,18 @@
-
 :root {
-	--background-color: #efefef;
-	--primary-color: #31b454;
-	--title-color: #282828;
-	--text-color: #585858;
+  --background-color: #efefef;
+  --primary-color: #31b454;
+  --title-color: #282828;
+  --text-color: #585858;
 }
 
 body {
-	margin: 12pt;
-	padding: 12pt;
-	background-color: var(--background-color);
+  margin: 12pt;
+  padding: 12pt;
+  background-color: var(--background-color);
 }
 
 * {
-	color: var(--text-color);
+  color: var(--text-color);
 }
 
 h1,
@@ -22,49 +21,49 @@ h3,
 h4,
 h5,
 h6 {
-	color: var(--title-color);
+  color: var(--title-color);
 }
 
 main > h1 {
-	margin: 12pt;
-	padding: 12pt;
+  margin: 12pt;
+  padding: 12pt;
 }
 
 main > div {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px;
-	padding: 12pt;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12pt;
 }
 
 main h2 {
-	margin-top: 4pt;
-	margin-bottom: 0pt;
-	padding-bottom: 0pt;
+  margin-top: 4pt;
+  margin-bottom: 0pt;
+  padding-bottom: 0pt;
 }
 
 main > div > div {
-	border-color: var(--text-color);
-	border-width: 1px;
-	border-style: solid;
-	padding: 12pt;
+  border-color: var(--text-color);
+  border-width: 1px;
+  border-style: solid;
+  padding: 12pt;
 }
 
 input {
-	border-color: var(--text-color);
-	border-width: 1px;
-	border-style: solid;
-	background-color: var(--background-color);
+  border-color: var(--text-color);
+  border-width: 1px;
+  border-style: solid;
+  background-color: var(--background-color);
 }
 
 button {
-	background-color: var(--primary-color);
-	color: var(--background-color);
-	box-shadow: none;
-	border: none;
-	text-decoration: none;
-	text-shadow: none;
-	outline: none;
-	border-radius: 12pt;
-	padding: 4pt;
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  box-shadow: none;
+  border: none;
+  text-decoration: none;
+  text-shadow: none;
+  outline: none;
+  border-radius: 12pt;
+  padding: 4pt;
 }

@@ -11,9 +11,7 @@ export default function () {
       <EthersBrowserProviderProvider>
         <EIP6963DetailProvider>
           <main>
-            <h1>
-              クロスチェーンスワップアプリ
-            </h1>
+            <h1>クロスチェーンスワップアプリ</h1>
             <div>
               <div>
                 <EIP6963Chooser />

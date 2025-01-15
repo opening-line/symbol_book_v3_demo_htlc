@@ -149,9 +149,7 @@ export default () => {
   }
   return (
     <div>
-      <h2>
-        お取引を提案
-      </h2>
+      <h2>お取引を提案</h2>
       <div>
         <div>
           お取引先のETHのアドレス
