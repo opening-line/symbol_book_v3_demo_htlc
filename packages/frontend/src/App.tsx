@@ -1,35 +1,25 @@
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import { EIP6963DetailProvider } from "./context/EIP6963Detail"
 import { EthersBrowserProviderProvider } from "./context/EthersBrowserProvider"
-import EIP6963Chooser from "./component/EIP6963Chooser"
-import SSSChooser from "./component/SSSChooser"
-import OfferReceived from "./component/OfferReceived"
-import Offer from "./component/Offer"
-import Header from "./component/Header"
+import Layout from "./component/Layout"
+import { Home } from "./pages"
+import { AliceIndex } from "./pages/Alice"
+import { BobIndex } from "./pages/Bob"
 
 export default function () {
   return (
-    <>
-      <EthersBrowserProviderProvider>
-        <EIP6963DetailProvider>
-          <Header />
-          <main>
-            <div>
-              <div>
-                <EIP6963Chooser />
-              </div>
-              <div>
-                <SSSChooser />
-              </div>
-              <div>
-                <Offer />
-              </div>
-              <div>
-                <OfferReceived />
-              </div>
-            </div>
-          </main>
-        </EIP6963DetailProvider>
-      </EthersBrowserProviderProvider>
-    </>
+    <EthersBrowserProviderProvider>
+      <EIP6963DetailProvider>
+        <Router>
+          <Routes>
+            <Route path='/' element={<Layout />}>
+              <Route path='/' element={<Home />} />
+              <Route path='/alice' element={<AliceIndex />} />
+              <Route path='/bob' element={<BobIndex />} />
+            </Route>
+          </Routes>
+        </Router>
+      </EIP6963DetailProvider>
+    </EthersBrowserProviderProvider>
   )
 }

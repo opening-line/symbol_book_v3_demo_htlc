@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 
 const Header: React.FC = () => {
   return (
@@ -6,14 +7,13 @@ const Header: React.FC = () => {
       style={{
         backgroundColor: "#282c34",
         padding: "10px",
-        color: "white",
         display: "flex",
         gap: "2rem",
         alignItems: "center",
       }}
     >
       <div style={{ color: "white", fontSize: "1.5rem" }}>
-        クロスチェーンスワップアプリ
+        <Link to='/'>クロスチェーンスワップアプリ</Link>
       </div>
       <nav>
         <ul
@@ -26,14 +26,10 @@ const Header: React.FC = () => {
           }}
         >
           <li>
-            <a href='#' style={{ color: "white", textDecoration: "none" }}>
-              Alice
-            </a>
+            <Link to='/alice'>Alice</Link>
           </li>
           <li>
-            <a href='#' style={{ color: "white", textDecoration: "none" }}>
-              Bob
-            </a>
+            <Link to='/bob'>Bob</Link>
           </li>
         </ul>
       </nav>
