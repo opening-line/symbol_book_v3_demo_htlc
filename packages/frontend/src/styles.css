@@ -58,8 +58,13 @@ button {
   text-decoration: none;
   text-shadow: none;
   outline: none;
-  border-radius: 12pt;
-  padding: 4pt;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(110%);
 }
 
 header a {
