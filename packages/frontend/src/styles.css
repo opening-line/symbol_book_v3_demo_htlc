@@ -25,25 +25,18 @@ h6 {
   color: var(--title-color);
 }
 
-main > h1 {
-  margin: 12pt;
-  padding: 12pt;
+main {
+  padding: 1rem;
 }
 
-main > div {
+.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   padding: 12pt;
 }
 
-main h2 {
-  margin-top: 4pt;
-  margin-bottom: 0pt;
-  padding-bottom: 0pt;
-}
-
-main > div > div {
+.grid > div {
   border-color: var(--text-color);
   border-width: 1px;
   border-style: solid;

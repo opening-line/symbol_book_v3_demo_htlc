@@ -6,19 +6,21 @@ import OfferReceived from "../../component/OfferReceived.tsx"
 
 export const AliceIndex: React.FC = () => {
   return (
-    <div>
-      <div>
-        <EIP6963Chooser />
+    <>
+      <div className='grid'>
+        <div>
+          <EIP6963Chooser />
+        </div>
+        <div>
+          <SSSChooser />
+        </div>
+        <div>
+          <Offer />
+        </div>
+        <div>
+          <OfferReceived />
+        </div>
       </div>
-      <div>
-        <SSSChooser />
-      </div>
-      <div>
-        <Offer />
-      </div>
-      <div>
-        <OfferReceived />
-      </div>
-    </div>
+    </>
   )
 }
