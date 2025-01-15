@@ -15,7 +15,9 @@ export default () => {
     <div>
       <h2>SSS Extension</h2>
       <div>
-        <button onClick={onButtonClick}>SSSと接続</button>
+        <button type='button' onClick={onButtonClick}>
+          SSSと接続
+        </button>
         {address}(<XymBalance address={address} />)
       </div>
     </div>

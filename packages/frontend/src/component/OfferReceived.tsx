@@ -208,6 +208,7 @@ export default () => {
                   <div>{counterpartyAddressEth}</div>
                   <div>{counterpartyAddressXym.toString()}</div>
                   <button
+                    type='button'
                     ref={buttonRef}
                     onClick={onButtonClickFactory(
                       e,

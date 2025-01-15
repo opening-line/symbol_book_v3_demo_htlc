@@ -33,7 +33,9 @@ export default () => {
         </label>
       ))}
       <div>
-        <button onClick={onButtonClick}>接続</button>
+        <button type='button' onClick={onButtonClick}>
+          接続
+        </button>
         {address}(<EthBalance address={address} />)
       </div>
     </div>

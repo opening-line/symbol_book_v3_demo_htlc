@@ -162,7 +162,11 @@ export default () => {
           />
         </div>
         <div>
-          <button disabled={offerButtonDisabled} onClick={onButtonClick}>
+          <button
+            type='button'
+            disabled={offerButtonDisabled}
+            onClick={onButtonClick}
+          >
             提案
           </button>
         </div>
