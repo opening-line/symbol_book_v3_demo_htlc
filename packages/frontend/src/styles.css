@@ -68,3 +68,12 @@ button {
   border-radius: 12pt;
   padding: 4pt;
 }
+
+header a {
+  text-decoration: none;
+  color: #d1d1d1;
+}
+
+header a:hover {
+  color: white;
+}
