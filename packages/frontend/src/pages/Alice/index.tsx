@@ -7,6 +7,7 @@ import OfferReceived from "../../component/OfferReceived.tsx"
 export const AliceIndex: React.FC = () => {
   return (
     <>
+      <h1>Alice</h1>
       <div className='grid'>
         <div>
           <EIP6963Chooser />
