@@ -149,11 +149,7 @@ export default () => {
   }
   return (
     <div>
-      <h2
-        style={{
-          color: "red",
-        }}
-      >
+      <h2>
         お取引を提案
       </h2>
       <div>

@@ -13,11 +13,7 @@ export default () => {
   }
   return (
     <div>
-      <h2
-        style={{
-          color: "red",
-        }}
-      >
+      <h2>
         SSS Extension
       </h2>
       <div>

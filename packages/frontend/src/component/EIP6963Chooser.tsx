@@ -18,11 +18,7 @@ export default () => {
   }
   return (
     <div>
-      <h2
-        style={{
-          color: "red",
-        }}
-      >
+      <h2>
         EIP-6963対応ウォレット
       </h2>
       {detail.map((d, i) => (
