@@ -3,9 +3,18 @@ import React from "react"
 const Header: React.FC = () => {
   return (
     <header
-      style={{ backgroundColor: "#282c34", padding: "10px", color: "white" }}
+      style={{
+        backgroundColor: "#282c34",
+        padding: "10px",
+        color: "white",
+        display: "flex",
+        gap: "2rem",
+        alignItems: "center",
+      }}
     >
-      <h1>My Website</h1>
+      <div style={{ color: "white", fontSize: "1.5rem" }}>
+        クロスチェーンスワップアプリ
+      </div>
       <nav>
         <ul
           style={{
@@ -18,17 +27,12 @@ const Header: React.FC = () => {
         >
           <li>
             <a href='#' style={{ color: "white", textDecoration: "none" }}>
-              Home
+              Alice
             </a>
           </li>
           <li>
             <a href='#' style={{ color: "white", textDecoration: "none" }}>
-              About
-            </a>
-          </li>
-          <li>
-            <a href='#' style={{ color: "white", textDecoration: "none" }}>
-              Contact
+              Bob
             </a>
           </li>
         </ul>
