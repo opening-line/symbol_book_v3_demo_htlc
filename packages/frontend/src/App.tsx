@@ -13,7 +13,6 @@ export default function () {
         <EIP6963DetailProvider>
           <Header />
           <main>
-            <h1>クロスチェーンスワップアプリ</h1>
             <div>
               <div>
                 <EIP6963Chooser />
