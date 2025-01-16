@@ -5,6 +5,8 @@ import Layout from "./component/Layout"
 import { Home } from "./pages"
 import { AliceIndex } from "./pages/Alice"
 import { BobIndex } from "./pages/Bob"
+import AliceLayout from "./component/AliceLayout.tsx";
+import BobLayout from "./component/BobLayout.tsx";
 
 export default function () {
   return (
@@ -12,10 +14,14 @@ export default function () {
       <EIP6963DetailProvider>
         <Router>
           <Routes>
+            <Route path='/alice' element={<AliceLayout />}>
+              <Route path='' element={<AliceIndex />} />
+            </Route>
+            <Route path='/bob' element={<BobLayout />}>
+              <Route path='' element={<BobIndex />} />
+            </Route>
             <Route path='/' element={<Layout />}>
-              <Route path='/' element={<Home />} />
-              <Route path='/alice' element={<AliceIndex />} />
-              <Route path='/bob' element={<BobIndex />} />
+              <Route path='' element={<Home />} />
             </Route>
           </Routes>
         </Router>
