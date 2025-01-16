@@ -6,10 +6,11 @@ const Header: React.FC = () => {
     <header
       style={{
         backgroundColor: "#282c34",
-        padding: "10px",
+        padding: "0 10px",
         display: "flex",
         gap: "2rem",
         alignItems: "center",
+        height: "3.5rem",
       }}
     >
       <div style={{ color: "white", fontSize: "1.5rem" }}>
@@ -24,8 +25,7 @@ const Header: React.FC = () => {
             margin: 0,
             padding: 0,
           }}
-        >
-        </ul>
+        ></ul>
       </nav>
     </header>
   )

@@ -50,7 +50,8 @@ input {
   background-color: var(--background-color);
 }
 
-button, a.button {
+button,
+a.button {
   background-color: var(--primary-color);
   color: var(--background-color);
   box-shadow: none;
@@ -67,7 +68,8 @@ a.button {
   display: inline-block;
 }
 
-button:hover, a.button:hover {
+button:hover,
+a.button:hover {
   filter: brightness(110%);
 }
 
@@ -78,4 +80,34 @@ header a {
 
 header a:hover {
   color: white;
+}
+
+nav.side-menu {
+  position: fixed;
+  top: 3.5rem;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  background-color: gray;
+  padding: 1rem;
+}
+
+nav.side-menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+nav.side-menu ul li {
+  margin: 0 0 10px 0;
+  padding: .5rem 0;
+}
+
+nav.side-menu ul li a {
+  color: var(--background-color);
+}
+
+nav.side-menu ul li a:hover {
+  filter: brightness(110%);
 }

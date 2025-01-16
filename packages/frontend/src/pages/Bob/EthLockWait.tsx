@@ -4,10 +4,10 @@ import SSSChooser from "../../component/SSSChooser.tsx"
 import Offer from "../../component/Offer.tsx"
 import OfferReceived from "../../component/OfferReceived.tsx"
 
-export const AliceIndex: React.FC = () => {
+export const BobEthLockWait: React.FC = () => {
   return (
     <>
-      <h1>Alice</h1>
+      <h1>Bob</h1>
       <div className='grid'>
         <div>
           <EIP6963Chooser />
