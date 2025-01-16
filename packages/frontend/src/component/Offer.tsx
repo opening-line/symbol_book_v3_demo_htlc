@@ -1,7 +1,7 @@
 import { HTLC__factory } from "contracts"
 import { ethers } from "ethers"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState, useMemo } from "react"
 import { sha256 } from "@noble/hashes/sha256"
 import {
   Address,
@@ -91,10 +91,13 @@ export default () => {
     EthersBrowserProviderContext,
   )
   const [offerButtonDisabled, setOfferButtonDisabled] = useState(true)
-  useEffect(() => {
-    setOfferButtonDisabled(undefined === browserProvider)
-  }, [browserProvider])
+
   const [counterparty, setCounterparty] = useState("")
+
+  const offerButtonDisabled = useMemo(() => {
+    return undefined === browserProvider
+  }, [browserProvider]);
+
   const onButtonClick = async () => {
     const [raw] = generatePreimage()
     const [activeAddress] = await deployHTLC(raw, browserProvider, counterparty)
