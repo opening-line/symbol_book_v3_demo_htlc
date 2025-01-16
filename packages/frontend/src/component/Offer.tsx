@@ -90,7 +90,6 @@ export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
-  const [offerButtonDisabled, setOfferButtonDisabled] = useState(true)
 
   const [counterparty, setCounterparty] = useState("")
 
