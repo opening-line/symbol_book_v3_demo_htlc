@@ -1,5 +1,5 @@
 import React from "react"
-import Offer from "../../component/Offer.tsx"
+import OfferEth from "../../component/OfferEth.tsx"
 
 export const AliceEthLock: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ export const AliceEthLock: React.FC = () => {
       </h1>
       <div className='grid'>
         <div>
-          <Offer />
+          <OfferEth />
         </div>
       </div>
     </>
