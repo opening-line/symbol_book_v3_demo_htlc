@@ -25,12 +25,6 @@ const Header: React.FC = () => {
             padding: 0,
           }}
         >
-          <li>
-            <Link to='/alice'>Alice</Link>
-          </li>
-          <li>
-            <Link to='/bob'>Bob</Link>
-          </li>
         </ul>
       </nav>
     </header>

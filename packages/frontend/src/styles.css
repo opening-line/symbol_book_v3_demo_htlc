@@ -50,7 +50,7 @@ input {
   background-color: var(--background-color);
 }
 
-button {
+button, a.button {
   background-color: var(--primary-color);
   color: var(--background-color);
   box-shadow: none;
@@ -63,7 +63,11 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+a.button {
+  display: inline-block;
+}
+
+button:hover, a.button:hover {
   filter: brightness(110%);
 }
 
