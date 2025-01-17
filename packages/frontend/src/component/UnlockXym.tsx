@@ -1,6 +1,5 @@
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
-import { useContext, useMemo } from "react"
+import { useMemo } from "react"
 import {
   Address,
   descriptors,
@@ -56,14 +55,11 @@ async function announceSecretProofTransaction(signed: { payload: string }) {
 }
 
 export default () => {
-  const [browserProvider, _setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
   const { secret, proof } = useSecretProofContext()
 
   const offerButtonDisabled = useMemo(() => {
-    return undefined === browserProvider || proof === "" || secret === ""
-  }, [browserProvider])
+    return proof === "" || secret === ""
+  }, [proof, secret])
 
   const onButtonClick = async () => {
     const activeAddress = getActiveAddress()
