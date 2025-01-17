@@ -3,8 +3,10 @@ import React, { createContext, useContext, useState, ReactNode } from "react"
 interface AppContextType {
   secret: string
   proof: string
+  recipient: string
   setSecret: (secret: string) => void
   setProof: (proof: string) => void
+  setRecipient: (recipient: string) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -14,8 +16,9 @@ export const SecretProofProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [secret, setSecret] = useState("")
   const [proof, setProof] = useState("")
+  const [recipient, setRecipient] = useState("")
 
-  const value = { secret, proof, setSecret, setProof }
+  const value = { secret, proof, setSecret, setProof, recipient, setRecipient }
 
   return <AppContext.Provider value={value}> {children} </AppContext.Provider>
 }
