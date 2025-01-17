@@ -11,7 +11,7 @@ export default () => {
     EthersBrowserProviderContext,
   )
   const { setSecret, setRecipient } = useSecretProofContext()
-  const { setTimeLock } = useEthereumContractProvider()
+  const { setTimeLock, setContractAddress } = useEthereumContractProvider()
   const [offer, setOffer] = useState<any[]>([])
 
   useEffect(() => {
@@ -70,9 +70,11 @@ export default () => {
 
   const onButtonClick = (event: any, counterpartyAddressXym: Address) => {
     const secret = event[4].replace("0x", "").toUpperCase()
+    const contractAddress = event.address
     setSecret(secret)
     setTimeLock(Number(event[3]))
     setRecipient(counterpartyAddressXym.toString())
+    setContractAddress(contractAddress)
   }
 
   return (

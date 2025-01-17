@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, ReactNode } from "react"
 interface AppContextType {
   timeLock: number
   setTimeLock: (timeLock: number) => void
+  contractAddress: string
+  setContractAddress: (contractAddress: string) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -11,8 +13,9 @@ export const EthereumContractProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [timeLock, setTimeLock] = useState(0)
+  const [contractAddress, setContractAddress] = useState("")
 
-  const value = { timeLock, setTimeLock }
+  const value = { timeLock, setTimeLock, contractAddress, setContractAddress }
 
   return <AppContext.Provider value={value}> {children} </AppContext.Provider>
 }
