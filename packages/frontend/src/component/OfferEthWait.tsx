@@ -4,12 +4,14 @@ import { createRef, useContext, useEffect, useState } from "react"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { Address } from "symbol-sdk/symbol"
 import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
+import { useEthereumContractProvider } from "../context/EthereumContractProvider.tsx"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
     EthersBrowserProviderContext,
   )
   const { setSecret, setRecipient } = useSecretProofContext()
+  const { setTimeLock } = useEthereumContractProvider()
   const [offer, setOffer] = useState<any[]>([])
 
   useEffect(() => {
@@ -69,6 +71,7 @@ export default () => {
   const onButtonClick = (event: any, counterpartyAddressXym: Address) => {
     const secret = event[4].replace("0x", "").toUpperCase()
     setSecret(secret)
+    setTimeLock(Number(event[3]))
     setRecipient(counterpartyAddressXym.toString())
   }
 
