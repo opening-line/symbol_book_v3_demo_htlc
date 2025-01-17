@@ -1,92 +1,58 @@
-import { HTLC__factory } from "contracts"
-import { ethers, JsonRpcProvider } from "ethers"
-import { useContext, useEffect, useState } from "react"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
-import { Address } from "symbol-sdk/symbol"
+import { useEffect } from "react"
+import {
+  getActiveAddress,
+} from "sss-module"
+import { useSecretProofContext } from "../context/SecretProofProvider.tsx";
 
 export default () => {
-  const [browserProvider, _setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
-  const [offer, setOffer] = useState<any[]>([])
+  const activeAddress = getActiveAddress()
+  const { secret } = useSecretProofContext()
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const remove: number[] = []
-      offer.forEach((e: any, i) => {
-        const timelock = HTLC__factory.createInterface().decodeEventLog(
-          "Locked",
-          e.data,
-        )[3]
-        if (timelock * 1000n < BigInt(new Date().valueOf() + 120000)) {
-          remove.unshift(i)
-        }
-      })
-      if (remove.length > 0) {
-        const offer_cloned = Array.from(offer)
-        remove.forEach((i) => {
-          offer_cloned.splice(i, 1)
-        })
-        setOffer(offer_cloned)
-      }
-    }, 250)
-    return () => {
-      clearInterval(interval)
-    }
-  }, [offer])
-
-  useEffect(() => {
-    if (browserProvider === undefined) {
-      return
-    }
-    const provider = new JsonRpcProvider(
-      import.meta.env.VITE_HARDHAT_RPC_ORIGIN,
+    const ws = new WebSocket(
+      import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(/^http/, "ws") + "/ws",
     )
-    ;(async () => {
-      provider.on(
-        {
-          topics: [
-            HTLC__factory.createInterface().getEvent("Locked").topicHash,
-            await browserProvider
-              .getSigner()
-              .then((r) =>
-                r.address.replace("0x", "0x000000000000000000000000"),
-              ),
-          ],
-        },
-        (event) => {
-          setOffer([...offer, event])
-        },
-      )
-    })()
-    return () => {
-      provider.destroy()
+    let uid: string | undefined = undefined
+    const topic = "confirmedAdded/" + activeAddress
+    ws.onmessage = async (event) => {
+      if (typeof event.data !== "string") {
+        return
+      }
+      const json = JSON.parse(event.data)
+      if (json.uid !== undefined) {
+        uid = json.uid
+        ws.send(
+          JSON.stringify({
+            uid,
+            subscribe: "block",
+          }),
+        )
+        ws.send(
+          JSON.stringify({
+            uid,
+            subscribe: topic,
+          }),
+        )
+      }
+      if (uid === undefined) {
+        return
+      }
+      if (json.topic == topic) {
+        console.log(json)
+        if (
+          json.data.transaction.secret == secret &&
+          json.data.transaction.amount == "1000000"
+        ) {
+          ws.close()
+        }
+      }
     }
-  }, [browserProvider])
+
+  }, [])
 
   return (
     <div>
       <h2>お取引のご提案</h2>
-      <div>
-        {offer.length == 0
-          ? "ございません"
-          : offer.map((e: any, i) => {
-              let event = HTLC__factory.createInterface().decodeEventLog(
-                "Locked",
-                e.data,
-              )
-              const counterpartyAddressEth = event[0]
-              const counterpartyAddressXym = new Address(
-                ethers.getBytes(event[5]),
-              )
-              return (
-                <div key={i}>
-                  <div>{counterpartyAddressEth}</div>
-                  <div>{counterpartyAddressXym.toString()}</div>
-                </div>
-              )
-            })}
-      </div>
     </div>
   )
 }
