@@ -1,4 +1,4 @@
-import { HTLC__factory } from "contracts"
+import { HTLC__factory, type HTLC } from "contracts"
 import { ethers } from "ethers"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
 import { useContext, useEffect, useState } from "react"
@@ -28,7 +28,7 @@ async function deployHTLC(
   raw: Uint8Array,
   browserProvider: ethers.BrowserProvider,
   counterparty: string,
-) {
+): Promise<[string, HTLC]> {
   const factory = new HTLC__factory(await browserProvider.getSigner())
   const activeAddress = getActiveAddress()
   const contract = await factory.deploy(
@@ -39,7 +39,7 @@ async function deployHTLC(
     { value: 1000000000000000000n },
   )
   await contract.waitForDeployment()
-  return [activeAddress]
+  return [activeAddress, contract]
 }
 
 function createSecretProofTransaction(
@@ -97,7 +97,7 @@ export default () => {
   const [counterparty, setCounterparty] = useState("")
   const onButtonClick = async () => {
     const [raw] = generatePreimage()
-    const [activeAddress] = await deployHTLC(raw, browserProvider, counterparty)
+    const [activeAddress, contract] = await deployHTLC(raw, browserProvider, counterparty)
     const ws = new WebSocket(
       import.meta.env.VITE_SYMBOL_API_ORIGIN.replace(/^http/, "ws") + "/ws",
     )
@@ -146,6 +146,15 @@ export default () => {
         }
       }
     }
+    setTimeout(async () => {
+      if(ws.readyState == WebSocket.CLOSED){
+        return
+      }
+      ws.close()
+      let tx=await contract.refund()
+      await tx.wait()
+      window.alert("お取引は失敗しました。")
+    }, 20*60*1000)
   }
   return (
     <div>
