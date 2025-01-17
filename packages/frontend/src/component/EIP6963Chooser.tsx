@@ -1,14 +1,12 @@
-import { useContext, useState } from "react"
-import { EIP6963DetailContext } from "../context/EIP6963Detail"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import { useState } from "react"
+import { useEIP6963DetailProvider } from "../context/EIP6963Detail"
+import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
 import { BrowserProvider } from "ethers"
 import EthBalance from "./EthBalance"
 
 export default () => {
-  const detail = useContext(EIP6963DetailContext)
-  const [_browserProvider, setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
+  const { details } = useEIP6963DetailProvider()
+  const { setBrowserProvider } = useSecretEthersBrowserProviderProvider()
   const [provider, setProvider] = useState<any>(undefined)
   const [address, setAddress] = useState("")
   const onButtonClick = async (_event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,7 +17,7 @@ export default () => {
   return (
     <div>
       <h2>EIP-6963対応ウォレット</h2>
-      {detail.map((d, i) => (
+      {details.map((d, i) => (
         <label key={i}>
           <input
             type='radio'

@@ -1,7 +1,7 @@
 import { HTLC__factory } from "contracts"
 import { ethers } from "ethers"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
-import { useContext, useState, useMemo } from "react"
+import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
+import { useState, useMemo } from "react"
 import { sha256 } from "@noble/hashes/sha256"
 import { Address } from "symbol-sdk/symbol"
 import { utils } from "symbol-sdk"
@@ -32,9 +32,7 @@ async function deployHTLC(
 }
 
 export default () => {
-  const [browserProvider, _setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
+  const { browserProvider } = useSecretEthersBrowserProviderProvider()
   const { setProof, setSecret } = useSecretProofContext()
 
   const [counterparty, setCounterparty] = useState("")
@@ -44,6 +42,11 @@ export default () => {
   }, [browserProvider])
 
   const onButtonClick = async () => {
+    if (!browserProvider) {
+      window.alert("BrowserProviderが無いです")
+      return
+    }
+
     const [proof] = generatePreimage()
     const secret = sha256(sha256(proof))
     setProof(utils.uint8ToHex(proof))

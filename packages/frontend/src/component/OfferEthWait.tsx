@@ -1,15 +1,13 @@
 import { HTLC__factory } from "contracts"
 import { ethers, JsonRpcProvider } from "ethers"
-import { createRef, useContext, useEffect, useState } from "react"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import { createRef, useEffect, useState } from "react"
+import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
 import { Address } from "symbol-sdk/symbol"
 import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
 import { useEthereumContractProvider } from "../context/EthereumContractProvider.tsx"
 
 export default () => {
-  const [browserProvider, _setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
+  const { browserProvider } = useSecretEthersBrowserProviderProvider()
   const { setSecret, setRecipient } = useSecretProofContext()
   const { setTimeLock, setContractAddress } = useEthereumContractProvider()
   const [offer, setOffer] = useState<any[]>([])

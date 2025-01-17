@@ -1,21 +1,26 @@
 import { HTLC__factory } from "contracts"
-import { useContext, useMemo } from "react"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import { useMemo } from "react"
+import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
 import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
 import { useEthereumContractProvider } from "../context/EthereumContractProvider.tsx"
 
 export default () => {
-  const [browserProvider, _setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
+  const { browserProvider } = useSecretEthersBrowserProviderProvider()
   const { proof } = useSecretProofContext()
   const { contractAddress } = useEthereumContractProvider()
 
   const buttonDisabled = useMemo(() => {
-    return proof === "" || contractAddress === ""
-  }, [proof, contractAddress])
+    return (
+      proof === "" || contractAddress === "" || browserProvider === undefined
+    )
+  }, [proof, contractAddress, browserProvider])
 
   const onButtonClick = async () => {
+    if (!browserProvider) {
+      window.alert("BrowserProviderが無いです")
+      return
+    }
+
     const htlc = HTLC__factory.connect(
       contractAddress,
       await browserProvider.getSigner(),
