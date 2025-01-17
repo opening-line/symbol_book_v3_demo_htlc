@@ -17,34 +17,37 @@ import { BobXymUnlockWait } from "./pages/Bob/XymUnlockWait.tsx"
 import AliceLayout from "./component/AliceLayout.tsx"
 import BobLayout from "./component/BobLayout.tsx"
 import { SecretProofProvider } from "./context/SecretProofProvider.tsx"
+import { EthereumContractProvider } from "./context/EthereumContractProvider.tsx"
 
 export default function () {
   return (
     <EthersBrowserProviderProvider>
       <EIP6963DetailProvider>
         <SecretProofProvider>
-          <Router>
-            <Routes>
-              <Route path='/alice' element={<AliceLayout />}>
-                <Route path='' element={<AliceIndex />} />
-                <Route path='setup' element={<AliceSetUp />} />
-                <Route path='ethlock' element={<AliceEthLock />} />
-                <Route path='xymlockwait' element={<AliceXymLockWait />} />
-                <Route path='xymunlock' element={<AliceXymUnlock />} />
-              </Route>
-              <Route path='/bob' element={<BobLayout />}>
-                <Route path='' element={<BobIndex />} />
-                <Route path='setup' element={<BobSetUp />} />
-                <Route path='ethlockwait' element={<BobEthLockWait />} />
-                <Route path='xymlock' element={<BobXymLock />} />
-                <Route path='xymunlockwait' element={<BobXymUnlockWait />} />
-                <Route path='ethunlock' element={<BobEthUnlock />} />
-              </Route>
-              <Route path='/' element={<Layout />}>
-                <Route path='' element={<Home />} />
-              </Route>
-            </Routes>
-          </Router>
+          <EthereumContractProvider>
+            <Router>
+              <Routes>
+                <Route path='/alice' element={<AliceLayout />}>
+                  <Route path='' element={<AliceIndex />} />
+                  <Route path='setup' element={<AliceSetUp />} />
+                  <Route path='ethlock' element={<AliceEthLock />} />
+                  <Route path='xymlockwait' element={<AliceXymLockWait />} />
+                  <Route path='xymunlock' element={<AliceXymUnlock />} />
+                </Route>
+                <Route path='/bob' element={<BobLayout />}>
+                  <Route path='' element={<BobIndex />} />
+                  <Route path='setup' element={<BobSetUp />} />
+                  <Route path='ethlockwait' element={<BobEthLockWait />} />
+                  <Route path='xymlock' element={<BobXymLock />} />
+                  <Route path='xymunlockwait' element={<BobXymUnlockWait />} />
+                  <Route path='ethunlock' element={<BobEthUnlock />} />
+                </Route>
+                <Route path='/' element={<Layout />}>
+                  <Route path='' element={<Home />} />
+                </Route>
+              </Routes>
+            </Router>
+          </EthereumContractProvider>
         </SecretProofProvider>
       </EIP6963DetailProvider>
     </EthersBrowserProviderProvider>
