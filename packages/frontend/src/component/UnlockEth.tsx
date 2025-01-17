@@ -12,7 +12,7 @@ export default () => {
   const { contractAddress } = useEthereumContractProvider()
 
   const buttonDisabled = useMemo(() => {
-    return proof === "" || contractAddress === "";
+    return proof === "" || contractAddress === ""
   }, [proof, contractAddress])
 
   const onButtonClick = async () => {

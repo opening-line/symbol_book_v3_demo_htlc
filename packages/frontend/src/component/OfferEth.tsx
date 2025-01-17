@@ -41,7 +41,7 @@ export default () => {
 
   const offerButtonDisabled = useMemo(() => {
     return undefined === browserProvider
-  }, [browserProvider]);
+  }, [browserProvider])
 
   const onButtonClick = async () => {
     const [proof] = generatePreimage()

@@ -2,9 +2,7 @@ import { HTLC__factory } from "contracts"
 import { ethers, JsonRpcProvider } from "ethers"
 import { useContext, useEffect, useState } from "react"
 import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
-import {
-  Address,
-} from "symbol-sdk/symbol"
+import { Address } from "symbol-sdk/symbol"
 
 export default () => {
   const [browserProvider, _setBrowserProvider] = useContext(
