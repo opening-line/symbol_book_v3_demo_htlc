@@ -5,7 +5,7 @@ import SSSChooser from "../../component/SSSChooser.tsx"
 export const BobSetUp: React.FC = () => {
   return (
     <>
-      <h1>Bob</h1>
+      <h1>Bob <small>セットアップ</small></h1>
       <div className='grid'>
         <div>
           <EIP6963Chooser />
