@@ -1,8 +1,6 @@
 import React from "react"
 import EIP6963Chooser from "../../component/EIP6963Chooser.tsx"
 import SSSChooser from "../../component/SSSChooser.tsx"
-import Offer from "../../component/Offer.tsx"
-import OfferReceived from "../../component/OfferReceived.tsx"
 
 export const BobSetUp: React.FC = () => {
   return (
@@ -14,12 +12,6 @@ export const BobSetUp: React.FC = () => {
         </div>
         <div>
           <SSSChooser />
-        </div>
-        <div>
-          <Offer />
-        </div>
-        <div>
-          <OfferReceived />
         </div>
       </div>
     </>
