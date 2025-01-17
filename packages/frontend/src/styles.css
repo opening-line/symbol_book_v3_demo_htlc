@@ -61,6 +61,9 @@ a.button {
   outline: none;
   border-radius: .5rem;
   padding: .5rem 1rem;
+}
+
+button:not(:disabled) {
   cursor: pointer;
 }
 
@@ -68,9 +71,13 @@ a.button {
   display: inline-block;
 }
 
-button:hover,
-a.button:hover {
+button:not(:disabled):hover,
+a.button:not(:disabled):hover {
   filter: brightness(110%);
+}
+
+button:disabled, a.button:disabled {
+  filter: brightness(80%);
 }
 
 header a {
