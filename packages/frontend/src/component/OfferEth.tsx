@@ -11,7 +11,8 @@ import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
 function generatePreimage() {
   const raw = new Uint8Array(20)
   crypto.getRandomValues(raw)
-  return [raw]
+  const hash = sha256(sha256(raw))
+  return [raw, hash]
 }
 
 async function deployHTLC(
@@ -38,8 +39,8 @@ export default () => {
   const [counterparty, setCounterparty] = useState("")
 
   const offerButtonDisabled = useMemo(() => {
-    return undefined === browserProvider
-  }, [browserProvider])
+    return undefined === browserProvider || counterparty === ""
+  }, [browserProvider, counterparty])
 
   const onButtonClick = async () => {
     if (!browserProvider) {
@@ -47,8 +48,7 @@ export default () => {
       return
     }
 
-    const [proof] = generatePreimage()
-    const secret = sha256(sha256(proof))
+    const [proof, secret] = generatePreimage()
     setProof(utils.uint8ToHex(proof))
     setSecret(utils.uint8ToHex(secret))
     await deployHTLC(secret, browserProvider, counterparty)
