@@ -76,7 +76,8 @@ a.button:not(:disabled):hover {
   filter: brightness(110%);
 }
 
-button:disabled, a.button:disabled {
+button:disabled,
+a.button:disabled {
   filter: brightness(80%);
 }
 
