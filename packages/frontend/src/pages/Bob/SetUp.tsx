@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
 import EIP6963Chooser from "../../component/EIP6963Chooser.tsx"
 import SSSChooser from "../../component/SSSChooser.tsx"
 
 export const BobSetUp: React.FC = () => {
+  const [ethAddress, setEthAddress] = useState<string>("")
+
   return (
     <>
       <h1>
@@ -10,7 +12,10 @@ export const BobSetUp: React.FC = () => {
       </h1>
       <div className='grid'>
         <div>
-          <EIP6963Chooser />
+          <EIP6963Chooser
+            ethAddress={ethAddress}
+            setEthAddress={setEthAddress}
+          />
         </div>
         <div>
           <SSSChooser />

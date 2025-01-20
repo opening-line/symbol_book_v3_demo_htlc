@@ -1,8 +1,6 @@
 import { useEffect } from "react"
-import {
-  getActiveAddress,
-} from "sss-module"
-import { useSecretProofContext } from "../context/SecretProofProvider.tsx";
+import { getActiveAddress } from "sss-module"
+import { useSecretProofContext } from "../context/SecretProofProvider.tsx"
 
 export default () => {
   const activeAddress = getActiveAddress()
@@ -47,7 +45,6 @@ export default () => {
         }
       }
     }
-
   }, [])
 
   return (
