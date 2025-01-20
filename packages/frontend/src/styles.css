@@ -3,6 +3,7 @@
   --primary-color: #31b454;
   --title-color: #282828;
   --text-color: #222222;
+  --border-radius: .5rem;
 }
 
 body {
@@ -44,10 +45,19 @@ main {
 }
 
 input {
+  padding: 8px 12px;
   border-color: var(--text-color);
   border-width: 1px;
   border-style: solid;
   background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  transition: box-shadow 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 4px var(--background-color);
 }
 
 button,
@@ -59,7 +69,7 @@ a.button {
   text-decoration: none;
   text-shadow: none;
   outline: none;
-  border-radius: .5rem;
+  border-radius: var(--border-radius);
   padding: .5rem 1rem;
 }
 
