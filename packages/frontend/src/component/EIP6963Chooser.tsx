@@ -50,9 +50,7 @@ const EIP6963Chooser: React.FC<Props> = ({ ethAddress, setEthAddress }) => {
         </button>
       </div>
       <div style={{ marginTop: 10 }}>
-        <div>
-          {ethAddress}
-        </div>
+        <div>{ethAddress}</div>
         <div>
           <EthBalance address={ethAddress} />
         </div>
