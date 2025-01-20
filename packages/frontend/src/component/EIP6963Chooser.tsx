@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { useEIP6963DetailProvider } from "../context/EIP6963Detail"
 import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
 import { BrowserProvider } from "ethers"
