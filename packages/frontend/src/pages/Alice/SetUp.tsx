@@ -4,6 +4,7 @@ import SSSChooser from "../../component/SSSChooser.tsx"
 
 export const AliceSetUp: React.FC = () => {
   const [ethAddress, setEthAddress] = useState<string>("")
+  const [symbolAddress, setSymbolAddress] = useState<string>("")
 
   return (
     <>
@@ -18,7 +19,10 @@ export const AliceSetUp: React.FC = () => {
           />
         </div>
         <div>
-          <SSSChooser />
+          <SSSChooser
+            symbolAddress={symbolAddress}
+            setSymbolAddress={setSymbolAddress}
+          />
         </div>
       </div>
     </>

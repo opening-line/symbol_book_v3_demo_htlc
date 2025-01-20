@@ -4,6 +4,7 @@ import SSSChooser from "../../component/SSSChooser.tsx"
 
 export const BobSetUp: React.FC = () => {
   const [ethAddress, setEthAddress] = useState<string>("")
+  const [symbolAddress, setSymbolAddress] = useState<string>("")
 
   return (
     <>
@@ -18,7 +19,10 @@ export const BobSetUp: React.FC = () => {
           />
         </div>
         <div>
-          <SSSChooser />
+          <SSSChooser
+            symbolAddress={symbolAddress}
+            setSymbolAddress={setSymbolAddress}
+          />
         </div>
       </div>
     </>
