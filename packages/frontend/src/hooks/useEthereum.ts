@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ethers } from "ethers"
+import { ContractRunner, ethers } from "ethers"
 import { HTLC__factory } from "contracts"
 import { getActiveAddress } from "sss-module"
 import { Address } from "symbol-sdk/symbol"
@@ -71,8 +71,18 @@ export function useHtlc() {
   const getTopicHash = () =>
     HTLC__factory.createInterface().getEvent("Locked").topicHash
 
+  const redeem = async (
+    contractAddress: string,
+    signer: ContractRunner,
+    proof: string,
+  ) => {
+    const htlc = HTLC__factory.connect(contractAddress, signer)
+    return await htlc.redeem(proof)
+  }
+
   return {
     decodeEventLog,
     getTopicHash,
+    redeem,
   }
 }
