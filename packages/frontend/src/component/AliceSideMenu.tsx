@@ -1,27 +1,15 @@
-import { Link } from "react-router-dom"
+import { SideMenu, SideMenuItem } from "./SideMenu"
 
 const AliceSideMenu: React.FC = () => {
-  return (
-    <nav className='side-menu'>
-      <ul>
-        <li>
-          <Link to='/alice/setup'>セットアップ</Link>
-        </li>
-        <li>
-          <Link to='/alice/ethlock'>①ETHロック</Link>
-        </li>
-        <li>
-          <Link to='/alice/xymlockwait'>②XYMロック待ち</Link>
-        </li>
-        <li>
-          <Link to='/alice/xymunlock'>③XYMロック解除</Link>
-        </li>
-        <li>
-          <Link to='/alice/finish'>完了</Link>
-        </li>
-      </ul>
-    </nav>
-  )
+  const menuItems: SideMenuItem[] = [
+    { to: "/alice/setup", label: "セットアップ" },
+    { to: "/alice/ethlock", label: "①ETHロック" },
+    { to: "/alice/xymlockwait", label: "②XYMロック待ち" },
+    { to: "/alice/xymunlock", label: "③XYMロック解除" },
+    { to: "/alice/finish", label: "完了" },
+  ]
+
+  return <SideMenu menuItems={menuItems} />
 }
 
 export default AliceSideMenu

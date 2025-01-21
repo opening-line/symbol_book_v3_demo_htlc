@@ -1,30 +1,15 @@
-import { Link } from "react-router-dom"
+import { SideMenu, SideMenuItem } from "./SideMenu.tsx"
 
 const BobSideMenu: React.FC = () => {
-  return (
-    <nav className='side-menu'>
-      <ul>
-        <li>
-          <Link to='/bob/setup'>セットアップ</Link>
-        </li>
-        <li>
-          <Link to='/bob/ethlockwait'>①ETHロック待ち</Link>
-        </li>
-        <li>
-          <Link to='/bob/xymlock'>②XYMロック</Link>
-        </li>
-        <li>
-          <Link to='/bob/xymunlockwait'>③XYMロック解除待ち</Link>
-        </li>
-        <li>
-          <Link to='/bob/ethunlock'>④ETHロック解除</Link>
-        </li>
-        <li>
-          <Link to='/bob/finish'>完了</Link>
-        </li>
-      </ul>
-    </nav>
-  )
+  const menuItems: SideMenuItem[] = [
+    { to: "/bob/setup", label: "セットアップ" },
+    { to: "/bob/ethlockwait", label: "①ETHロック待ち" },
+    { to: "/bob/xymlock", label: "②XYMロック" },
+    { to: "/bob/xymunlockwait", label: "③XYMロック解除待ち" },
+    { to: "/bob/ethunlock", label: "④ETHロック解除" },
+    { to: "/bob/finish", label: "完了" },
+  ]
+  return <SideMenu menuItems={menuItems} />
 }
 
 export default BobSideMenu

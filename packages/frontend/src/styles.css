@@ -122,10 +122,14 @@ nav.side-menu ul li {
   padding: .5rem 0;
 }
 
-nav.side-menu ul li a {
-  color: var(--background-color);
+nav.side-menu ul li span.done {
+  color: lightgray;
 }
-
-nav.side-menu ul li a:hover {
-  filter: brightness(110%);
+nav.side-menu ul li span.doing {
+  color: var(--primary-color);
+  filter: brightness(130%);
+  font-weight: bold;
+}
+nav.side-menu ul li span.todo {
+  color: var(--background-color);
 }
