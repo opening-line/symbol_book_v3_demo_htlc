@@ -6,7 +6,7 @@ import {
   Network,
   SymbolFacade,
 } from "symbol-sdk/symbol"
-import { Hash256, PublicKey } from "symbol-sdk"
+import { Hash256, PublicKey, utils } from "symbol-sdk"
 import {
   getActivePublicKey,
   requestSign,
@@ -24,7 +24,7 @@ function createSecretProofTransaction(
       new Address(activeAddress),
       new Hash256(hash),
       models.LockHashAlgorithm.HASH_256,
-      proof,
+      utils.hexToUint8(proof),
     ),
     new PublicKey(getActivePublicKey()),
     1000,
