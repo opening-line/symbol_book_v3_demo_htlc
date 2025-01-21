@@ -22,7 +22,7 @@ export const AliceXymUnlock: React.FC = () => {
   }, [proof, secret, isLoading])
 
   const nextButtonDisabled = useMemo(() => {
-    return txHash !== ""
+    return txHash === ""
   }, [txHash])
 
   const onOfferButtonClick = async () => {
