@@ -18,12 +18,13 @@ async function deployHTLC(
     new Address(activeAddress).bytes,
     { value: 1000000000000000000n },
   )
-  await contract.waitForDeployment()
+  return await contract.waitForDeployment()
 }
 
 export function useDeployHTLC() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [result, setResult] = useState<string | null>(null)
 
   const deploy = async (
     hash: Uint8Array,
@@ -32,8 +33,10 @@ export function useDeployHTLC() {
   ) => {
     setIsLoading(true)
     setError(null)
+    setResult(null)
     try {
-      await deployHTLC(hash, browserProvider, counterparty)
+      const response = await deployHTLC(hash, browserProvider, counterparty)
+      setResult(JSON.stringify(response))
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred")
     } finally {
@@ -41,5 +44,5 @@ export function useDeployHTLC() {
     }
   }
 
-  return { deployHTLC: deploy, isLoading, error }
+  return { deployHTLC: deploy, isLoading, error, result }
 }

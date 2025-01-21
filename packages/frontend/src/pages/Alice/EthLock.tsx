@@ -14,6 +14,7 @@ export const AliceEthLock: React.FC = () => {
     isLoading: isDeploying,
     deployHTLC,
     error: deployError,
+    result: deployResult,
   } = useDeployHTLC()
 
   const [counterparty, setCounterparty] = useState("")
@@ -23,8 +24,14 @@ export const AliceEthLock: React.FC = () => {
   }, [browserProvider, counterparty, isDeploying])
 
   const isDeployFinished = useMemo(() => {
-    return proof !== "" && secret !== "" && deployError === null && !isDeploying
-  }, [proof, secret, deployError, isDeploying])
+    return (
+      proof !== "" &&
+      secret !== "" &&
+      deployError === null &&
+      !isDeploying &&
+      deployResult !== ""
+    )
+  }, [proof, secret, deployError, isDeploying, deployResult])
 
   const onButtonClick = async () => {
     if (!browserProvider) {
@@ -76,6 +83,15 @@ export const AliceEthLock: React.FC = () => {
             }}
           >
             {deployError}
+          </div>
+          <div
+            style={{
+              marginTop: 10,
+              wordBreak: "break-all",
+              fontFamily: "monospace",
+            }}
+          >
+            {deployResult}
           </div>
         </div>
       </div>
