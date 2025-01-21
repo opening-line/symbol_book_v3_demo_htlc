@@ -16,6 +16,9 @@ const AliceSideMenu: React.FC = () => {
         <li>
           <Link to='/alice/xymunlock'>③XYMロック解除</Link>
         </li>
+        <li>
+          <Link to='/alice/finish'>完了</Link>
+        </li>
       </ul>
     </nav>
   )

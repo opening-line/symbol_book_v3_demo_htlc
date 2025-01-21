@@ -4,7 +4,7 @@ export const AliceFinish: React.FC = () => {
   return (
     <>
       <h1>アリス</h1>
-      <div className='grid'></div>
+      <h2>完了です</h2>
     </>
   )
 }

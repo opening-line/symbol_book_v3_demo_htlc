@@ -19,6 +19,9 @@ const BobSideMenu: React.FC = () => {
         <li>
           <Link to='/bob/ethunlock'>④ETHロック解除</Link>
         </li>
+        <li>
+          <Link to='/bob/finish'>完了</Link>
+        </li>
       </ul>
     </nav>
   )
