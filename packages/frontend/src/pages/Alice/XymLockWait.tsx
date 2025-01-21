@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, {useMemo, useState} from "react"
 import { useEffect } from "react"
 import { getActiveAddress } from "sss-module"
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
+import {Link} from "react-router-dom";
 
 export const AliceXymLockWait: React.FC = () => {
   const [txHash, setTxHash] = useState<string>("")
@@ -55,6 +56,10 @@ export const AliceXymLockWait: React.FC = () => {
     }
   }, [])
 
+  const nextButtonDisabled = useMemo(() => {
+    return txHash === ""
+  }, [txHash])
+
   return (
     <>
       <h1>
@@ -65,6 +70,18 @@ export const AliceXymLockWait: React.FC = () => {
           <h2>ボブのXYMロック</h2>
           <p>{txHash}</p>
         </div>
+      </div>
+      <div>
+        {nextButtonDisabled && (
+          <button type='button' disabled={true}>
+            次へ
+          </button>
+        )}
+        {!nextButtonDisabled && (
+          <Link className='button' to='/alice/xymunlock'>
+            次へ
+          </Link>
+        )}
       </div>
     </>
   )
