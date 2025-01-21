@@ -27,7 +27,7 @@ export const AliceEthLock: React.FC = () => {
     return (
       proof !== "" &&
       secret !== "" &&
-      deployError === null &&
+      deployError === "" &&
       !isDeploying &&
       deployResult !== ""
     )

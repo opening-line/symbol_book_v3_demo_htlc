@@ -43,8 +43,8 @@ function decodeEventLog(hex: string) {
 
 export function useDeployHTLC() {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [result, setResult] = useState<string | null>(null)
+  const [error, setError] = useState<string>("")
+  const [result, setResult] = useState<string>("")
 
   const deploy = async (
     hash: Uint8Array,
@@ -52,8 +52,8 @@ export function useDeployHTLC() {
     counterparty: string,
   ) => {
     setIsLoading(true)
-    setError(null)
-    setResult(null)
+    setError("")
+    setResult("")
     try {
       const response = await deployHTLC(hash, browserProvider, counterparty)
       setResult(JSON.stringify(response))
@@ -69,8 +69,8 @@ export function useDeployHTLC() {
 
 export function useRedeemHtlc() {
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [result, setResult] = useState<string | null>(null)
+  const [error, setError] = useState<string>("")
+  const [result, setResult] = useState<string>("")
 
   const redeem = async (
     contractAddress: string,
@@ -78,8 +78,8 @@ export function useRedeemHtlc() {
     proof: string,
   ) => {
     setIsLoading(true)
-    setError(null)
-    setResult(null)
+    setError("")
+    setResult("")
     try {
       const htlc = HTLC__factory.connect(contractAddress, signer)
       const response = await htlc.redeem(proof)

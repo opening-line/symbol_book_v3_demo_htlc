@@ -73,7 +73,7 @@ export const BobEthUnlock: React.FC = () => {
                 fontFamily: "monospace",
               }}
             >
-              アナウンスの結果： {result}
+              トランザクション送信の結果： {result}
             </div>
           )}
           {error && (
