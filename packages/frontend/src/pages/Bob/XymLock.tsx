@@ -81,9 +81,10 @@ export const BobXymLock: React.FC = () => {
               fontFamily: "monospace",
             }}
           >
-            期限： {new Date(timeLock * 1000).toLocaleString()} (unixtime: {timeLock})
+            期限： {new Date(timeLock * 1000).toLocaleString()} (unixtime:{" "}
+            {timeLock})
           </div>
-          <div style={{marginTop: 10}}>
+          <div style={{ marginTop: 10 }}>
             <button
               type='button'
               onClick={onButtonClick}
