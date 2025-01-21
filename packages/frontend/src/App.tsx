@@ -1,15 +1,18 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom"
 import { EIP6963DetailProvider } from "./context/EIP6963Detail"
 import { EthersBrowserProviderProvider } from "./context/EthersBrowserProvider"
 import Layout from "./component/Layout"
 import { Home } from "./pages"
-import { AliceIndex } from "./pages/Alice/Home.tsx"
 import { AliceSetUp } from "./pages/Alice/SetUp.tsx"
 import { AliceEthLock } from "./pages/Alice/EthLock.tsx"
 import { AliceXymLockWait } from "./pages/Alice/XymLockWait.tsx"
 import { AliceXymUnlock } from "./pages/Alice/XymUnlock.tsx"
 import { AliceFinish } from "./pages/Alice/Finish.tsx"
-import { BobIndex } from "./pages/Bob/Home.tsx"
 import { BobSetUp } from "./pages/Bob/SetUp.tsx"
 import { BobEthUnlock } from "./pages/Bob/EthUnlock.tsx"
 import { BobEthLockWait } from "./pages/Bob/EthLockWait.tsx"
@@ -30,7 +33,7 @@ export default function () {
             <Router>
               <Routes>
                 <Route path='/alice' element={<AliceLayout />}>
-                  <Route path='' element={<AliceIndex />} />
+                  <Route path='' element={<Navigate to='setup' replace />} />
                   <Route path='setup' element={<AliceSetUp />} />
                   <Route path='ethlock' element={<AliceEthLock />} />
                   <Route path='xymlockwait' element={<AliceXymLockWait />} />
@@ -38,7 +41,7 @@ export default function () {
                   <Route path='finish' element={<AliceFinish />} />
                 </Route>
                 <Route path='/bob' element={<BobLayout />}>
-                  <Route path='' element={<BobIndex />} />
+                  <Route path='' element={<Navigate to='setup' replace />} />
                   <Route path='setup' element={<BobSetUp />} />
                   <Route path='ethlockwait' element={<BobEthLockWait />} />
                   <Route path='xymlock' element={<BobXymLock />} />

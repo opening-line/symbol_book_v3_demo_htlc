@@ -6,7 +6,11 @@ export const Home: React.FC = () => {
     <div>
       <h1>クロスチェーンスワップアプリ</h1>
       <div style={{ marginBottom: "3rem" }}>
-        <Link className='button' style={{ marginRight: ".4rem" }} to='/alice'>
+        <Link
+          className='button'
+          style={{ marginRight: ".4rem" }}
+          to='/alice/setup'
+        >
           アリスとして開始
         </Link>
         <p>
@@ -14,7 +18,11 @@ export const Home: React.FC = () => {
         </p>
       </div>
       <div>
-        <Link className='button' style={{ marginRight: ".4rem" }} to='/bob'>
+        <Link
+          className='button'
+          style={{ marginRight: ".4rem" }}
+          to='/bob/setup'
+        >
           ボブとして開始
         </Link>
         <p>
