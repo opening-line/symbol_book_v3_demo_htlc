@@ -67,6 +67,33 @@ export function useDeployHTLC() {
   return { deployHTLC: deploy, isLoading, error, result }
 }
 
+export function useRedeemHtlc() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [result, setResult] = useState<string | null>(null)
+
+  const redeem = async (
+    contractAddress: string,
+    signer: ContractRunner,
+    proof: string,
+  ) => {
+    setIsLoading(true)
+    setError(null)
+    setResult(null)
+    try {
+      const htlc = HTLC__factory.connect(contractAddress, signer)
+      const response = await htlc.redeem(proof)
+      setResult(JSON.stringify(response))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An unknown error occurred")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return { redeemHTLC: redeem, isLoading, error, result }
+}
+
 export function useHtlc() {
   const getTopicHash = () =>
     HTLC__factory.createInterface().getEvent("Locked").topicHash

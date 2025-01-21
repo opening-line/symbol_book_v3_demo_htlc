@@ -1,23 +1,24 @@
-import React, { useMemo, useState } from "react"
+import React, { useMemo } from "react"
 import { useSecretEthersBrowserProviderProvider } from "../../context/EthersBrowserProvider.tsx"
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
 import { useEthereumContractProvider } from "../../context/EthereumContractProvider.tsx"
-import { useHtlc } from "../../hooks/useEthereum.ts"
+import { useRedeemHtlc } from "../../hooks/useEthereum.ts"
 import { Link } from "react-router-dom"
 
 export const BobEthUnlock: React.FC = () => {
-  const [result, setResult] = useState<string>("")
-
   const { browserProvider } = useSecretEthersBrowserProviderProvider()
   const { proof } = useSecretProofContext()
   const { contractAddress } = useEthereumContractProvider()
-  const { redeem } = useHtlc()
+  const { redeemHTLC, isLoading, result, error } = useRedeemHtlc()
 
   const buttonDisabled = useMemo(() => {
     return (
-      proof === "" || contractAddress === "" || browserProvider === undefined
+      proof === "" ||
+      contractAddress === "" ||
+      browserProvider === undefined ||
+      isLoading
     )
-  }, [proof, contractAddress, browserProvider])
+  }, [proof, contractAddress, browserProvider, isLoading])
 
   const onButtonClick = async () => {
     if (!browserProvider) {
@@ -25,18 +26,16 @@ export const BobEthUnlock: React.FC = () => {
       return
     }
 
-    const response = await redeem(
+    await redeemHTLC(
       contractAddress,
       await browserProvider.getSigner(),
       `0x${proof}`,
     )
-
-    setResult(JSON.stringify(response))
   }
 
   const nextButtonDisabled = useMemo(() => {
-    return result === ""
-  }, [proof])
+    return result === "" || error !== "" || isLoading
+  }, [proof, error, isLoading])
 
   return (
     <>
@@ -46,13 +45,23 @@ export const BobEthUnlock: React.FC = () => {
       <div className='grid'>
         <div>
           <h2>お取引のご提案</h2>
-          <div>
+          <h3>情報</h3>
+          <div
+            style={{
+              marginTop: 10,
+              wordBreak: "break-all",
+              fontFamily: "monospace",
+            }}
+          >
+            プルーフ： {proof}
+          </div>
+          <div style={{ marginTop: 10 }}>
             <button
               type='button'
               onClick={onButtonClick}
               disabled={buttonDisabled}
             >
-              お取引
+              {isLoading ? "お取引中..." : "お取引"}
             </button>
           </div>
           <h3>結果</h3>
@@ -65,6 +74,17 @@ export const BobEthUnlock: React.FC = () => {
               }}
             >
               アナウンスの結果： {result}
+            </div>
+          )}
+          {error && (
+            <div
+              style={{
+                marginTop: 10,
+                wordBreak: "break-all",
+                fontFamily: "monospace",
+              }}
+            >
+              エラー： {error}
             </div>
           )}
         </div>
