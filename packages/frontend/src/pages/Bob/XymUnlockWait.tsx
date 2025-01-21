@@ -19,9 +19,9 @@ export const BobXymUnlockWait: React.FC = () => {
       if (typeof event.data !== "string") {
         return
       }
-      const json = JSON.parse(event.data)
-      if (uid === undefined && json.uid !== undefined) {
-        uid = json.uid
+      const eventData = JSON.parse(event.data)
+      if (uid === undefined && eventData.uid !== undefined) {
+        uid = eventData.uid
         ws.send(
           JSON.stringify({
             uid,
@@ -38,10 +38,12 @@ export const BobXymUnlockWait: React.FC = () => {
       if (uid === undefined) {
         return
       }
-      if (json.topic == topic) {
-        console.log(json)
-        const proof = json.data.transaction.proof
-        setProof(proof)
+      if (eventData.topic == topic) {
+        console.log(eventData)
+        if (eventData.data.transaction.type === 16978) {
+          const proof = eventData.data.transaction.proof
+          setProof(proof)
+        }
       }
     }
 

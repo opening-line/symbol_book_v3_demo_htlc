@@ -40,6 +40,7 @@ export const AliceXymLockWait: React.FC = () => {
       if (eventData.topic == topic) {
         console.log(eventData)
         if (
+          eventData.data.transaction.type === 16722 &&
           eventData.data.transaction.secret == secret &&
           eventData.data.transaction.amount == "1000000"
         ) {
