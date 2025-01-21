@@ -21,6 +21,26 @@ async function deployHTLC(
   return await contract.waitForDeployment()
 }
 
+function decodeEventLog(hex: string) {
+  const eventData = HTLC__factory.createInterface().decodeEventLog(
+    "Locked",
+    hex,
+  )
+
+  const fromEthAddress: string = eventData[0] // 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+  const timelock: bigint = eventData[3] // 1737433807n
+  const secret: string = eventData[4] // 0x6ad7e715b656969c150f308fca302e7bd266f584c88196db13b20c70a91be5c7
+  const toSymbolAddressHex = eventData[5] // 0x98cb7ddcfc9827260c6012a037ae1ad545f1a91d26505f1d
+  const toSymbolAddress: Uint8Array = ethers.getBytes(toSymbolAddressHex)
+
+  return {
+    fromEthAddress,
+    timelock,
+    secret,
+    toSymbolAddress,
+  }
+}
+
 export function useDeployHTLC() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -45,4 +65,14 @@ export function useDeployHTLC() {
   }
 
   return { deployHTLC: deploy, isLoading, error, result }
+}
+
+export function useHtlc() {
+  const getTopicHash = () =>
+    HTLC__factory.createInterface().getEvent("Locked").topicHash
+
+  return {
+    decodeEventLog,
+    getTopicHash,
+  }
 }
