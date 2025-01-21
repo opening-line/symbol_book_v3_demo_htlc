@@ -80,7 +80,7 @@ export const BobXymUnlockWait: React.FC = () => {
           </button>
         )}
         {!nextButtonDisabled && (
-          <Link className='button' to='/bob/xymlock'>
+          <Link className='button' to='/bob/ethunlock'>
             次へ
           </Link>
         )}
