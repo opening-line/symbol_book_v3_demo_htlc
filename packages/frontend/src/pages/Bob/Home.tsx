@@ -6,7 +6,7 @@ export const BobIndex: React.FC = () => {
     <>
       <h1>Bob</h1>
 
-      <Link className='button' to='/bob/finish'>
+      <Link className='button' to='/bob/setup'>
         開始する
       </Link>
     </>
