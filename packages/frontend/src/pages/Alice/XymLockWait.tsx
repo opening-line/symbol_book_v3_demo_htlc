@@ -1,8 +1,8 @@
-import React, {useMemo, useState} from "react"
+import React, { useMemo, useState } from "react"
 import { useEffect } from "react"
 import { getActiveAddress } from "sss-module"
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
 
 export const AliceXymLockWait: React.FC = () => {
   const [txHash, setTxHash] = useState<string>("")
