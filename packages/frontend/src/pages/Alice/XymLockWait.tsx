@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { useEffect } from "react"
 import { getActiveAddress } from "sss-module"
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
