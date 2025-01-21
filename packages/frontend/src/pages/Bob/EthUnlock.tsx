@@ -3,7 +3,7 @@ import { useSecretEthersBrowserProviderProvider } from "../../context/EthersBrow
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
 import { useEthereumContractProvider } from "../../context/EthereumContractProvider.tsx"
 import { useHtlc } from "../../hooks/useEthereum.ts"
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom"
 
 export const BobEthUnlock: React.FC = () => {
   const [result, setResult] = useState<string>("")
