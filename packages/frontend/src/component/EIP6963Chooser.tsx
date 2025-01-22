@@ -1,43 +1,62 @@
-import { useContext, useState } from "react"
-import { EIP6963DetailContext } from "../context/EIP6963Detail"
-import { EthersBrowserProviderContext } from "../context/EthersBrowserProvider"
+import React, { useState, useMemo } from "react"
+import { useEIP6963DetailProvider } from "../context/EIP6963Detail"
+import { useSecretEthersBrowserProviderProvider } from "../context/EthersBrowserProvider"
 import { BrowserProvider } from "ethers"
 import EthBalance from "./EthBalance"
 
-export default () => {
-  const detail = useContext(EIP6963DetailContext)
-  const [_browserProvider, setBrowserProvider] = useContext(
-    EthersBrowserProviderContext,
-  )
+type Props = {
+  ethAddress: string
+  setEthAddress: (address: string) => void
+}
+
+const EIP6963Chooser: React.FC<Props> = ({ ethAddress, setEthAddress }) => {
+  const { details } = useEIP6963DetailProvider()
+  const { setBrowserProvider } = useSecretEthersBrowserProviderProvider()
   const [provider, setProvider] = useState<any>(undefined)
-  const [address, setAddress] = useState("")
-  const onButtonClick = async (_event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const onButtonClick = async () => {
     const newBrowserProvider = new BrowserProvider(provider, 31337)
-    setAddress(await (await newBrowserProvider.getSigner()).getAddress())
+    setEthAddress(await (await newBrowserProvider.getSigner()).getAddress())
     setBrowserProvider(newBrowserProvider)
   }
+
+  const buttonDisabled = useMemo(() => {
+    return details.length === 0
+  }, [])
+
   return (
     <div>
-      <h2>
-        EIP-6963対応ウォレット
-      </h2>
-      {detail.map((d, i) => (
-        <label key={i}>
-          <input
-            type='radio'
-            name='eip6963'
-            value={i}
-            onChange={(_event) => {
-              setProvider(d.provider)
-            }}
-          />
-          {d.info.name}
-        </label>
-      ))}
+      <h2>EIP-6963対応ウォレット</h2>
       <div>
-        <button onClick={onButtonClick}>接続</button>
-        {address}(<EthBalance address={address} />)
+        {details.length === 0 && <p>ウォレット検知できず</p>}
+        {details.length > 0 &&
+          details.map((d, i) => (
+            <label key={i}>
+              <input
+                type='radio'
+                name='eip6963'
+                value={i}
+                onChange={(_event) => {
+                  setProvider(d.provider)
+                }}
+              />
+              {d.info.name}
+            </label>
+          ))}
+      </div>
+      <div style={{ marginTop: 10 }}>
+        <button type='button' onClick={onButtonClick} disabled={buttonDisabled}>
+          接続
+        </button>
+      </div>
+      <div style={{ marginTop: 10 }}>
+        <div>{ethAddress}</div>
+        <div>
+          <EthBalance address={ethAddress} />
+        </div>
       </div>
     </div>
   )
 }
+
+export default EIP6963Chooser

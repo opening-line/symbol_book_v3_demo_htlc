@@ -1,17 +1,44 @@
 import { BrowserProvider } from "ethers"
-import { createContext, FC, PropsWithChildren, useState } from "react"
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useState,
+} from "react"
 
-export const EthersBrowserProviderContext = createContext<
-  [BrowserProvider, React.Dispatch<React.SetStateAction<BrowserProvider>>]
->(undefined!)
+interface EthersBrowserProviderType {
+  browserProvider: BrowserProvider | undefined
+  setBrowserProvider: (provider: BrowserProvider) => void
+}
+
+const EthersBrowserProviderContext = createContext<
+  EthersBrowserProviderType | undefined
+>(undefined)
 
 export const EthersBrowserProviderProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const value = useState<BrowserProvider>(undefined!)
+  const [browserProvider, setBrowserProvider] = useState<
+    BrowserProvider | undefined
+  >(undefined)
+
+  const value = { browserProvider, setBrowserProvider }
+
   return (
     <EthersBrowserProviderContext.Provider value={value}>
       {children}
     </EthersBrowserProviderContext.Provider>
   )
 }
+
+export const useSecretEthersBrowserProviderProvider =
+  (): EthersBrowserProviderType => {
+    const context = useContext(EthersBrowserProviderContext)
+    if (!context) {
+      throw new Error(
+        "useEthersBrowserProviderProvider must be used within the EthersBrowserProviderProvider",
+      )
+    }
+    return context
+  }
