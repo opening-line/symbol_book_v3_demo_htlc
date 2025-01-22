@@ -46,7 +46,18 @@ export const BobXymUnlockWait: React.FC = () => {
         }
       }
     }
-
+    fetch(
+      `${import.meta.env.VITE_SYMBOL_API_ORIGIN}/transactions/confirmed?pageSize=100&order=desc&address=${recipient}`,
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .then((data: any[]) => data.filter((d) => d.transaction.type === 16978))
+      .then((a) => {
+        if (a.length > 0) {
+          setProof(a[0].transaction.proof)
+          ws.close()
+        }
+      })
     return () => {
       ws.close()
     }

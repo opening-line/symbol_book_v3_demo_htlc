@@ -50,7 +50,25 @@ export const AliceXymLockWait: React.FC = () => {
         }
       }
     }
-
+    fetch(
+      `${url}/transactions/confirmed?pageSize=100&order=desc&address=${activeAddress}`,
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .then((data: any[]) =>
+        data.filter(
+          (d) =>
+            d.transaction.type === 16722 &&
+            d.transaction.secret === secret &&
+            d.transaction.amount === "1000000",
+        ),
+      )
+      .then((a) => {
+        if (a.length > 0) {
+          setTxHash(a[0].meta.hash)
+          ws.close()
+        }
+      })
     return () => {
       ws.close()
     }
