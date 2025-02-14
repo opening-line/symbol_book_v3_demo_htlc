@@ -5,6 +5,8 @@ SymbolとHardhatでアトミックスワップを行うデモです。
 ## 動かし方
 
 ```bash
+# 環境変数の設定
+cp packages/frontend/.env.sample packages/frontend/.env
 # 依存関係をインストール
 npm ci
 # 動かす
