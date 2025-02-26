@@ -9,7 +9,7 @@ export const BobEthUnlock: React.FC = () => {
   const { browserProvider } = useSecretEthersBrowserProviderProvider()
   const { proof } = useSecretProofContext()
   const { contractAddress } = useEthereumContractProvider()
-  const { redeemHTLC, isLoading, result, error } = useRedeemHtlc()
+  const { redeemMyHTLC, isLoading, result, error } = useRedeemHtlc()
 
   const buttonDisabled = useMemo(() => {
     return (
@@ -26,7 +26,7 @@ export const BobEthUnlock: React.FC = () => {
       return
     }
 
-    await redeemHTLC(
+    await redeemMyHTLC(
       contractAddress,
       await browserProvider.getSigner(),
       `0x${proof}`,

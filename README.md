@@ -1,4 +1,4 @@
-# HTLC
+# MyHTLC
 
 SymbolとHardhatでアトミックスワップを行うデモです。
 

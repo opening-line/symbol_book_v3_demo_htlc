@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.27;
 
-contract HTLC {
+contract MyHTLC {
 
   event Locked(address _from, address indexed _to, uint256 _value, uint256 timelock, bytes32 hash, bytes _to_symbol);
   event Redeemed(bytes32 hash, bytes _preimage);
