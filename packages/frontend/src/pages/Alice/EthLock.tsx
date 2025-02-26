@@ -3,7 +3,7 @@ import { utils } from "symbol-sdk"
 import { useSecretEthersBrowserProviderProvider } from "../../context/EthersBrowserProvider"
 import { useSecretProofContext } from "../../context/SecretProofProvider.tsx"
 import { useRandom } from "../../hooks/useRandom.ts"
-import { useDeployCustomHTLC } from "../../hooks/useEthereum.ts"
+import { useDeployMyHTLC } from "../../hooks/useEthereum.ts"
 import { Link } from "react-router-dom"
 
 export const AliceEthLock: React.FC = () => {
@@ -12,10 +12,10 @@ export const AliceEthLock: React.FC = () => {
   const { generatePreimage } = useRandom()
   const {
     isLoading: isDeploying,
-    deployCustomHTLC,
+    deployMyHTLC,
     error: deployError,
     result: deployResult,
-  } = useDeployCustomHTLC()
+  } = useDeployMyHTLC()
 
   const [counterparty, setCounterparty] = useState("")
 
@@ -42,7 +42,7 @@ export const AliceEthLock: React.FC = () => {
     const [proof, secret] = generatePreimage()
     setProof(utils.uint8ToHex(proof))
     setSecret(utils.uint8ToHex(secret))
-    await deployCustomHTLC(secret, browserProvider, counterparty)
+    await deployMyHTLC(secret, browserProvider, counterparty)
   }
 
   return (

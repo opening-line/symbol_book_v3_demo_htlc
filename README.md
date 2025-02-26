@@ -1,4 +1,4 @@
-# CustomHTLC
+# MyHTLC
 
 SymbolとHardhatでアトミックスワップを行うデモです。
 

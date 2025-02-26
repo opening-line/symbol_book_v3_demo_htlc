@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { ContractRunner, ethers } from "ethers"
-import { CustomHTLC__factory } from "contracts"
+import { MyHTLC__factory } from "contracts"
 import { getActiveAddress } from "sss-module"
 import { Address } from "symbol-sdk/symbol"
 
-async function deployCustomHTLC(
+async function deployMyHTLC(
   hash: Uint8Array,
   browserProvider: ethers.BrowserProvider,
   counterparty: string,
 ) {
-  const factory = new CustomHTLC__factory(await browserProvider.getSigner())
+  const factory = new MyHTLC__factory(await browserProvider.getSigner())
   const activeAddress = getActiveAddress()
   const contract = await factory.deploy(
     counterparty,
@@ -22,7 +22,7 @@ async function deployCustomHTLC(
 }
 
 function decodeEventLog(hex: string) {
-  const eventData = CustomHTLC__factory.createInterface().decodeEventLog(
+  const eventData = MyHTLC__factory.createInterface().decodeEventLog(
     "Locked",
     hex,
   )
@@ -41,7 +41,7 @@ function decodeEventLog(hex: string) {
   }
 }
 
-export function useDeployCustomHTLC() {
+export function useDeployMyHTLC() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string>("")
   const [result, setResult] = useState<string>("")
@@ -55,7 +55,7 @@ export function useDeployCustomHTLC() {
     setError("")
     setResult("")
     try {
-      const response = await deployCustomHTLC(hash, browserProvider, counterparty)
+      const response = await deployMyHTLC(hash, browserProvider, counterparty)
       setResult(JSON.stringify(response))
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred")
@@ -64,7 +64,7 @@ export function useDeployCustomHTLC() {
     }
   }
 
-  return { deployCustomHTLC: deploy, isLoading, error, result }
+  return { deployMyHTLC: deploy, isLoading, error, result }
 }
 
 export function useRedeemHtlc() {
@@ -81,7 +81,7 @@ export function useRedeemHtlc() {
     setError("")
     setResult("")
     try {
-      const htlc = CustomHTLC__factory.connect(contractAddress, signer)
+      const htlc = MyHTLC__factory.connect(contractAddress, signer)
       const response = await htlc.redeem(proof)
       setResult(JSON.stringify(response))
     } catch (err) {
@@ -91,19 +91,19 @@ export function useRedeemHtlc() {
     }
   }
 
-  return { redeemCustomHTLC: redeem, isLoading, error, result }
+  return { redeemMyHTLC: redeem, isLoading, error, result }
 }
 
 export function useHtlc() {
   const getTopicHash = () =>
-    CustomHTLC__factory.createInterface().getEvent("Locked").topicHash
+    MyHTLC__factory.createInterface().getEvent("Locked").topicHash
 
   const redeem = async (
     contractAddress: string,
     signer: ContractRunner,
     proof: string,
   ) => {
-    const htlc = CustomHTLC__factory.connect(contractAddress, signer)
+    const htlc = MyHTLC__factory.connect(contractAddress, signer)
     return await htlc.redeem(proof)
   }
 
