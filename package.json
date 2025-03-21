@@ -6,7 +6,7 @@
         "packages/*"
     ],
     "scripts": {
-        "dev": "npm -w packages/contructs run build&& nx run-many --target=dev --projects=contracts,frontend --parallel"
+        "dev": "npm -w packages/contracts run build&& nx run-many --target=dev --projects=contracts,frontend --parallel"
     },
     "dependencies": {
         "nx": "^20.0.12"
