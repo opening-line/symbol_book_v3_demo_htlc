@@ -33,5 +33,5 @@ Symbol側はテストネットを、Hardhat側はローカルのノードを使�
 Hardhat側のニーモニックははデフォルトでは以下が使われます。
 
 ```
-test test test test test test test test test test test test junk
+test test test test test test test test test test test junk
 ```
